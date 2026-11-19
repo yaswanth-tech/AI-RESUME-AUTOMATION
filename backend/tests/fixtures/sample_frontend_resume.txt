@@ -1,0 +1,31 @@
+Samantha Lee
+samantha.lee@example.com | 555-876-5432 | New York, NY
+
+SUMMARY
+Creative and detail-oriented Frontend Developer with 2+ years of experience crafting interactive web applications with modern HTML, CSS, JavaScript, and React.
+
+SKILLS
+HTML, CSS, JavaScript, React, Next.js, Redux, Responsive Design, TypeScript, Tailwind CSS, Sass, Accessibility (a11y)
+
+TOOLS
+Git, GitHub, VS Code, Figma, Vite, Chrome DevTools, npm
+
+EXPERIENCE
+Frontend Developer | PixelCraft Studio | 2022 – Present
+• Developed modern web interfaces with React and Tailwind CSS, increasing mobile user engagement by 40%.
+• Built reusable UI component libraries following WCAG accessibility guidelines.
+• Optimized web asset delivery and core web vitals, raising Google Lighthouse score from 68 to 96.
+
+PROJECTS
+Interactive Analytics Dashboard (React, Chart.js)
+• Implemented client-side charting widgets visualizing sales metrics with real-time filter controls.
+
+EDUCATION
+Bachelor of Science in Information Technology, 2022
+New York University
+
+CERTIFICATIONS
+FreeCodeCamp Responsive Web Design Certificate (2021)
+
+ACHIEVEMENTS
+Selected for Google Women Techmakers Scholar cohort 2022

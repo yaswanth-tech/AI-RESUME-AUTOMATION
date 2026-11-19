@@ -1,0 +1,9 @@
+John Doe
+john.doe@example.com
+
+SKILLS
+HTML, CSS, basic Python
+
+EXPERIENCE
+Helped with website maintenance and bug fixing for 3 months.
+Made a small student portfolio project.

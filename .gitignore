@@ -1,0 +1,25 @@
+# Node modules
+node_modules/
+
+# Environment files
+.env
+.env.*
+!.env.example
+!**/.env.example
+backend/.env
+backend/.env.*
+!backend/.env.example
+
+# Uploads
+uploads/
+backend/uploads/
+
+# Logs
+*.log
+backend/*.log
+debug_errors.log
+server_error.log
+
+# OS and build artifacts
+.DS_Store
+Thumbs.db

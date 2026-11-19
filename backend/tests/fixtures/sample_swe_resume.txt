@@ -1,0 +1,44 @@
+Alex Morgan
+alex.morgan@example.com | (555) 234-5678 | San Francisco, CA | linkedin.com/in/alexmorgan
+
+SUMMARY
+Results-driven Full Stack Software Engineer with 3+ years of experience building scalable web applications and microservices. Skilled in JavaScript, TypeScript, Node.js, React, and PostgreSQL. Passionate about system performance, clean architecture, and API design.
+
+SKILLS
+JavaScript, TypeScript, Python, Node.js, Express.js, React, Redux, HTML5, CSS3, Tailwind CSS, PostgreSQL, MongoDB, Redis, REST APIs, GraphQL, Microservices, Unit Testing
+
+TOOLS
+Git, GitHub, Docker, Kubernetes, AWS (S3, EC2), Postman, Linux, Jest, Vite, Webpack, CI/CD pipelines
+
+EXPERIENCE
+Software Engineer | CloudScale Tech | 2022 – Present
+• Architected and deployed 12 RESTful microservices using Node.js and Express, supporting 200,000+ daily active users.
+• Optimized PostgreSQL database indexing and query structures, reducing p95 API response times by 35%.
+• Integrated Redis caching layer for session management, saving 40% server compute overhead during traffic spikes.
+• Collaborated with product designers to implement responsive React components with 98% test coverage.
+
+Junior Web Developer | Innovate Soft | 2020 – 2022
+• Developed front-end user dashboards with React and Tailwind CSS, improving client onboarding completion by 25%.
+• Engineered secure JWT user authentication and role-based access control (RBAC) endpoints.
+• Automated CI/CD deployment pipelines using GitHub Actions and Docker, reducing release cycle times by 50%.
+
+PROJECTS
+E-Commerce Microservices Engine (Node.js, PostgreSQL, Docker)
+• Designed an event-driven inventory service processing 10,000 requests/minute with zero downtime.
+• Built real-time order tracking using WebSockets and published open-source developer documentation.
+
+DevCollab Workspace (React, TypeScript, Express)
+• Built a collaborative code editor application with live syntax highlighting and team chat functionality.
+• Reduced bundle load size by 30% via code splitting and dynamic lazy loading.
+
+EDUCATION
+Bachelor of Technology in Computer Science, 2020
+University of California, Berkeley | GPA: 3.8 / 4.0
+
+CERTIFICATIONS
+AWS Certified Solutions Architect – Associate (2023)
+Meta Front-End Developer Professional Certificate (2022)
+
+ACHIEVEMENTS
+1st Place Winner – HackSF 2023 for AI Developer Productivity Tool
+Dean's Honor List for 6 consecutive academic semesters

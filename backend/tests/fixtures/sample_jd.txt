@@ -1,0 +1,26 @@
+Title: Senior Backend Developer
+Company: Nexus Cloud Technologies
+Location: Remote / San Francisco, CA
+
+Job Summary:
+We are seeking an experienced Backend Engineer to lead the architecture and scaling of our distributed services. You will design resilient APIs and manage large relational and caching databases.
+
+Responsibilities:
+• Architect, build, and maintain mission-critical backend services and APIs using Node.js or Python.
+• Lead database schema optimization and indexing across PostgreSQL and Redis clusters.
+• Drive microservices modularization and containerized deployments using Docker and Kubernetes.
+• Collaborate with frontend and mobile teams to define GraphQL and REST contracts.
+• Mentor junior engineers and champion test-driven development and CI/CD automation.
+
+Required Qualifications:
+• 3+ years of professional backend engineering experience.
+• Strong proficiency in JavaScript/TypeScript (Node.js/Express) or Python.
+• Extensive experience with SQL and relational databases (PostgreSQL or MySQL).
+• Deep understanding of RESTful API design, data structures, and microservices.
+• Practical familiarity with Git, Docker, and cloud deployments (AWS, GCP, or Azure).
+• Bachelor's degree in Computer Science, Software Engineering, or equivalent practical experience.
+
+Preferred Qualifications:
+• Familiarity with Redis, Kafka, or RabbitMQ message queues.
+• Experience with GraphQL and Kubernetes orchestrations.
+• Contributions to open-source software libraries.
