@@ -1,0 +1,14 @@
+{
+  "name": "ascend",
+  "version": "1.0.0",
+  "description": "ASCEND Career & Resume Intelligence Platform",
+  "main": "backend/server.js",
+  "scripts": {
+    "postinstall": "cd backend && npm install && npx prisma generate",
+    "start": "cd backend && node server.js",
+    "test": "cd backend && npm test"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}
