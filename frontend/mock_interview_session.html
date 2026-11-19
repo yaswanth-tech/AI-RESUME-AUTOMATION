@@ -180,7 +180,29 @@
         }
       }, [transcript]);
 
-      // TTS Function
+      // Helper to find a natural female voice
+      const getFemaleVoice = () => {
+        if (!window.speechSynthesis) return null;
+        const voices = window.speechSynthesis.getVoices();
+        if (!voices || voices.length === 0) return null;
+
+        const femaleKeywords = [
+          'zira', 'samantha', 'jenny', 'aria', 'victoria', 'karen', 'moira', 'fiona',
+          'female', 'google us english', 'natural (female)', 'eva', 'serena', 'allison', 'catherine'
+        ];
+
+        for (const kw of femaleKeywords) {
+          const found = voices.find(v => v.lang.startsWith('en') && v.name.toLowerCase().includes(kw));
+          if (found) return found;
+        }
+
+        const anyFemale = voices.find(v => v.name.toLowerCase().includes('female'));
+        if (anyFemale) return anyFemale;
+
+        return voices.find(v => v.lang.startsWith('en')) || voices[0] || null;
+      };
+
+      // TTS Function (Female AI Voice)
       const speakQuestion = (text) => {
         if (!window.speechSynthesis) {
           setError("Text-to-Speech is not supported in this browser.");
@@ -192,8 +214,12 @@
         window.speechSynthesis.cancel();
 
         const utterance = new SpeechSynthesisUtterance(text);
-        utterance.rate = 1.0;
-        utterance.pitch = 1.0;
+        const femaleVoice = getFemaleVoice();
+        if (femaleVoice) {
+          utterance.voice = femaleVoice;
+        }
+        utterance.rate = 0.98;
+        utterance.pitch = 1.15; // Natural, clear female voice pitch
 
         utterance.onstart = () => {
           setIsAISpeaking(true);
@@ -213,6 +239,16 @@
 
         window.speechSynthesis.speak(utterance);
       };
+
+      // Pre-load voices on component mount
+      useEffect(() => {
+        if (typeof window !== 'undefined' && window.speechSynthesis) {
+          window.speechSynthesis.getVoices();
+          window.speechSynthesis.onvoiceschanged = () => {
+            window.speechSynthesis.getVoices();
+          };
+        }
+      }, []);
 
       // Speak when mode starts or question changes
       useEffect(() => {
