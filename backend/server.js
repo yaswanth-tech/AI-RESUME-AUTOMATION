@@ -110,7 +110,9 @@ app.get('/api/reports/download/:filename', requireAuth, requireCandidate, (req, 
 const uploadDirs = ['uploads', 'uploads/resumes', 'uploads/generated', 'uploads/reports'];
 uploadDirs.forEach(dir => {
   try {
-    const dirPath = path.join(__dirname, dir);
+    const dirPath = (process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME)
+      ? path.join('/tmp', dir)
+      : path.join(__dirname, dir);
     if (!fs.existsSync(dirPath)) fs.mkdirSync(dirPath, { recursive: true });
   } catch (err) {
     // Non-fatal on serverless environments where fs is read-only

@@ -15,11 +15,17 @@ const { Document, Packer, Paragraph, TextRun, HeadingLevel, AlignmentType, Borde
 
 class ResumeExportService {
   constructor() {
-    this.exportsDir = path.join(__dirname, '../uploads/generated');
-    if (!fs.existsSync(this.exportsDir)) {
-      fs.mkdirSync(this.exportsDir, { recursive: true, mode: 0o700 });
+    this.exportsDir = (process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME)
+      ? path.join('/tmp', 'generated')
+      : path.join(__dirname, '../uploads/generated');
+    try {
+      if (!fs.existsSync(this.exportsDir)) {
+        fs.mkdirSync(this.exportsDir, { recursive: true, mode: 0o700 });
+      }
+      try { fs.chmodSync(this.exportsDir, 0o700); } catch { /* Windows ACLs govern this directory. */ }
+    } catch {
+      // Non-fatal on read-only serverless environments
     }
-    try { fs.chmodSync(this.exportsDir, 0o700); } catch { /* Windows ACLs govern this directory. */ }
   }
 
   /**

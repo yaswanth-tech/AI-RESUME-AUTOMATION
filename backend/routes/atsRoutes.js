@@ -683,7 +683,12 @@ router.get('/download/:filename', requireAuth, requireCandidate, async (req, res
       : report ? path.join(__dirname, '../uploads/reports', filename) : null;
     if (!filePath) return res.status(404).json({ success: false, error: 'File not found.' });
     const resolved = path.resolve(filePath);
-    const allowedRoots = [path.resolve(__dirname, '../uploads/generated'), path.resolve(__dirname, '../uploads/reports')];
+    const allowedRoots = [
+      path.resolve(__dirname, '../uploads/generated'),
+      path.resolve(__dirname, '../uploads/reports'),
+      path.resolve('/tmp/generated'),
+      path.resolve('/tmp/reports')
+    ];
     if (!allowedRoots.some(root => resolved.startsWith(root + path.sep)) || !fs.existsSync(resolved)) {
       return res.status(404).json({ success: false, error: 'File not found.' });
     }
@@ -760,7 +765,13 @@ router.delete('/resumes/:id', requireAuth, requireCandidate, async (req, res) =>
       const resolved = entry.root
         ? path.resolve(entry.root, path.basename(entry.relative))
         : path.resolve(entry.file);
-      const allowedRoots = [PRIVATE_RESUME_DIR, path.resolve(__dirname, '../uploads/generated'), path.resolve(__dirname, '../uploads/reports')];
+      const allowedRoots = [
+        PRIVATE_RESUME_DIR,
+        path.resolve(__dirname, '../uploads/generated'),
+        path.resolve(__dirname, '../uploads/reports'),
+        path.resolve('/tmp/generated'),
+        path.resolve('/tmp/reports')
+      ];
       if (allowedRoots.some(root => resolved.startsWith(root + path.sep))) {
         try { fs.unlinkSync(resolved); } catch (error) { if (error.code !== 'ENOENT') console.warn(JSON.stringify({ event: 'file_cleanup_failed' })); }
       }

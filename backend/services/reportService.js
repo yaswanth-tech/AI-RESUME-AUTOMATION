@@ -13,11 +13,17 @@ const PDFDocument = require('pdfkit');
 
 class ReportService {
   constructor() {
-    this.reportsDir = path.join(__dirname, '../uploads/reports');
-    if (!fs.existsSync(this.reportsDir)) {
-      fs.mkdirSync(this.reportsDir, { recursive: true, mode: 0o700 });
+    this.reportsDir = (process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME)
+      ? path.join('/tmp', 'reports')
+      : path.join(__dirname, '../uploads/reports');
+    try {
+      if (!fs.existsSync(this.reportsDir)) {
+        fs.mkdirSync(this.reportsDir, { recursive: true, mode: 0o700 });
+      }
+      try { fs.chmodSync(this.reportsDir, 0o700); } catch { /* Windows ACLs govern this directory. */ }
+    } catch {
+      // Non-fatal on read-only serverless environments
     }
-    try { fs.chmodSync(this.reportsDir, 0o700); } catch { /* Windows ACLs govern this directory. */ }
   }
 
   /**
