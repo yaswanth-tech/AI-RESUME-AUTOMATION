@@ -23,3 +23,5 @@ server_error.log
 # OS and build artifacts
 .DS_Store
 Thumbs.db
+
+.vercel
