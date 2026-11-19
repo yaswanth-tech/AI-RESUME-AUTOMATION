@@ -1,7 +1,7 @@
 let examSubmitted = false;
 
-const API_START = "http://localhost:3002/api/test/start";
-const API_SUBMIT = "http://localhost:3002/api/test/submit-bulk";
+const API_START = "/api/test/start";
+const API_SUBMIT = "/api/test/submit-bulk";
 
 let questions = [];
 let currentTestId = null;

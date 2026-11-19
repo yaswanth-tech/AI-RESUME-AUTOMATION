@@ -206,7 +206,7 @@
   </main>
 
   <script>
-    const API_BASE = 'http://localhost:3002/api/test';
+    const API_BASE = '/api/test';
     let currentState = {
       testId: null,
       questions: [],
@@ -236,7 +236,7 @@
           body: JSON.stringify({
             subject: config.subject,
             difficulty: config.difficulty,
-            userId: UserContext.getUserId()
+            userId: (window.UserContext && window.UserContext.getUserId && window.UserContext.getUserId()) || localStorage.getItem('ascend_user_id') || "guest"
           })
         });
         const data = await res.json();

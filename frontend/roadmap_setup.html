@@ -260,7 +260,7 @@
         document.getElementById('resultView').style.display = 'block';
 
         try {
-          const res = await fetch('http://localhost:3002/api/diagnosis', {
+          const res = await fetch('/api/diagnosis', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(STATE)
@@ -305,7 +305,7 @@
         if (!DIAGNOSIS) return;
 
         try {
-          await fetch('http://localhost:3002/api/diagnosis/confirm', {
+          await fetch('/api/diagnosis/confirm', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({

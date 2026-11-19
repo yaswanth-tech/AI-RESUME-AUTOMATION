@@ -15,6 +15,7 @@ const testEmail = `ascend_e2e_${crypto.randomUUID()}@example.invalid`;
 let server;
 let token = '';
 let userId = '';
+let dashboardDiagnostic = '';
 let resumeId = '';
 
 function wait(ms) { return new Promise(resolve => setTimeout(resolve, ms)); }
@@ -23,7 +24,8 @@ async function requestJson(url, options = {}) {
   const response = await fetch(url, options);
   const payload = await response.json();
   if (!response.ok || payload.success === false) {
-    throw new Error(`${new URL(url).pathname} returned HTTP ${response.status}: ${payload.error || payload.message || 'request failed'}`);
+    const details = new URL(url).pathname === '/api/dashboard/stats' && dashboardDiagnostic ? ` (diagnostic ${dashboardDiagnostic})` : '';
+    throw new Error(`${new URL(url).pathname} returned HTTP ${response.status}: ${payload.error || payload.message || 'request failed'}${details}`);
   }
   return payload;
 }
@@ -99,11 +101,24 @@ async function run() {
   server = spawn(process.execPath, ['server.js'], {
     cwd: backendDirectory,
     env: { ...process.env, PORT: String(port), CORS_ORIGINS: `http://localhost:${port}`, AI_ENABLED: 'false' },
-    stdio: 'ignore'
+    stdio: ['ignore', 'ignore', 'pipe']
+  });
+  server.stderr.on('data', chunk => {
+    for (const line of chunk.toString().split(/\r?\n/)) {
+      try {
+        const event = JSON.parse(line);
+        if (event.event === 'dashboard_stats_failed') dashboardDiagnostic = `${event.category}:${event.errorCode}`;
+      } catch { /* ignore non-structured diagnostics */ }
+    }
   });
 
   try {
     await waitForServer();
+    const resumePage = await fetch(`${baseUrl}/resume_upload.html`);
+    const resumePageHtml = await resumePage.text();
+    assert(resumePage.ok && resumePageHtml.includes('id="jdAnalysisCard"'), 'resume page must display the standalone JD analysis card');
+    assert(resumePageHtml.includes('/api/ats/analyze-jd'), 'resume page must call the JD analysis endpoint');
+
     const signup = await requestJson(`${baseUrl}/api/auth/signup`, {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name: 'ASCEND E2E Candidate', email: testEmail, password: `Test-${crypto.randomUUID()}-Pass!` })
@@ -121,6 +136,15 @@ async function run() {
     assert(resumeId && uploaded.candidateRecord, 'resume upload must persist parsed candidate fields');
     assert(uploaded.candidateRecord.skills, 'fixture resume should extract skills');
 
+    const foreignSignup = await requestJson(`${baseUrl}/api/auth/signup`, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name: 'ASCEND E2E Other Candidate', email: `ascend_e2e_${crypto.randomUUID()}@example.invalid`, password: `Test-${crypto.randomUUID()}-Pass!` })
+    });
+    const foreignResumeResponse = await fetch(`${baseUrl}/api/ats/resume/${encodeURIComponent(resumeId)}`, {
+      headers: { Authorization: `Bearer ${foreignSignup.token}` }
+    });
+    assert.strictEqual(foreignResumeResponse.status, 404, 'another candidate must not read this resume');
+
     const jdText = fs.readFileSync(path.join(__dirname, 'fixtures/sample_jd.txt'), 'utf8');
     const jdForm = new FormData();
     jdForm.append('targetRole', 'Backend Developer');
@@ -136,6 +160,14 @@ async function run() {
     assert(Number.isFinite(match.matchScore), 'JD matching must return a numeric score');
     assert.strictEqual(match.scoreBreakdown.weights.skills, 0.5);
     assert(match.scoreBreakdown.criteria.experience && match.scoreBreakdown.criteria.education, 'match response should explain experience and education criteria');
+
+    if (uploaded.improvements?.summaryRewrite) {
+      const rejected = await requestJson(`${baseUrl}/api/ats/apply-improvement`, {
+        method: 'POST', headers: authHeaders({ 'Content-Type': 'application/json' }),
+        body: JSON.stringify({ resumeId, type: 'summary', acceptedText: uploaded.improvements.summaryRewrite, action: 'reject' })
+      });
+      assert(rejected.success, 'candidate must be able to reject a proposed summary');
+    }
 
     const correction = await requestJson(`${baseUrl}/api/ats/update-candidate`, {
       method: 'POST', headers: authHeaders({ 'Content-Type': 'application/json' }),

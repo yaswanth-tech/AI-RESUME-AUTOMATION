@@ -12,6 +12,7 @@
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="js/userContext.js"></script>
   <style>
     body {
       font-family: 'Inter', sans-serif;
@@ -320,14 +321,15 @@
         setStatus('processing');
 
         try {
+          const currentUserId = (window.UserContext && window.UserContext.getUserId && window.UserContext.getUserId()) || localStorage.getItem('ascend_user_id') || "guest";
           // 1. Start Session
-          const startRes = await fetch('http://localhost:3002/api/interview/start-session', {
+          const startRes = await fetch('/api/interview/start-session', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
               role: interviewConfig?.role || "Frontend Developer",
               type: interviewConfig?.type || "TECHNICAL",
-              userId: "guest"
+              userId: currentUserId
             })
           });
           const startData = await startRes.json();
@@ -350,7 +352,7 @@
         try {
           setStatus('processing');
           // USE NEW ENDPOINT
-          const res = await fetch('http://localhost:3002/api/interview/get-next-step', {
+          const res = await fetch('/api/interview/get-next-step', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ sessionId: sessId })
@@ -360,14 +362,21 @@
           if (data.success) {
             if (data.finished) { // OR data.type === 'completed'
               // End Session logic
-              const endRes = await fetch('http://localhost:3002/api/interview/end-session', {
+              const endRes = await fetch('/api/interview/end-session', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ sessionId: sessId })
               });
               const endData = await endRes.json();
-              setSummaryData(endData.data);
+              if (endData.success && endData.data) {
+                setSummaryData(endData.data);
+              }
               return;
+            }
+
+            // Sync question progress from backend (strictly 1 to 5)
+            if (data.progress !== undefined && data.progress > 0) {
+              setQuestionCount(Math.min(5, Math.max(1, data.progress)));
             }
 
             // SET CURRENT CONTENT
@@ -378,11 +387,6 @@
 
             // AUTO-ADVANCE LOGIC IF MESSAGE
             if (data.data.type === 'MESSAGE') {
-              // Only useful if we wait for speech to end.
-              // For now, let's just create a slight delay or handle onEnd of speech
-              // BUT, our speech effect handles `isAISpeaking`.
-              // Ideally, we wait for `isAISpeaking` to become false, then fetch next.
-              // We can use a ref or effect for this.
               window.isSystemMessage = true;
             } else {
               window.isSystemMessage = false;
@@ -422,7 +426,7 @@
 
         try {
           // 1. Submit Answer
-          const response = await fetch('http://localhost:3002/api/interview/submit-answer', {
+          const response = await fetch('/api/interview/submit-answer', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -450,7 +454,7 @@
 
           // 2. IMMEDIATE TRANSITION
           resetInterviewUIState();
-          setQuestionCount(prev => prev + 1); // Only visually approximate
+          // Note: questionCount is directly synchronized by data.progress from backend
 
           // Fetch Next
           await fetchNextQuestion(sessionId);
@@ -518,23 +522,26 @@
 
       // FINAL SUMMARY VIEW
       if (summaryData) {
-        const totalPossible = summaryData.attempts.length * 10;
+        const attempts = summaryData.attempts || [];
+        const totalPossible = attempts.length > 0 ? attempts.length * 10 : 50;
         const totalScoreObtained = summaryData.totalScore || 0;
-        const percentage = totalPossible > 0 ? (totalScoreObtained / totalPossible) * 100 : 0;
+        const percentage = summaryData.percentage !== undefined
+          ? summaryData.percentage
+          : (totalPossible > 0 ? Math.round((totalScoreObtained / totalPossible) * 100) : 0);
 
-        let performanceLabel = "Poor";
+        let performanceLabel = "Needs Practice";
         let overallFeedback = "You need stronger fundamentals in this role.";
 
-        if (percentage > 80) {
+        if (percentage >= 80) {
           performanceLabel = "Excellent";
           overallFeedback = "You demonstrate strong readiness for this role.";
-        } else if (percentage > 60) {
+        } else if (percentage >= 60) {
           performanceLabel = "Good";
           overallFeedback = "You are reasonably prepared but can improve depth.";
-        } else if (percentage > 40) {
+        } else if (percentage >= 40) {
           performanceLabel = "Average";
           overallFeedback = "You show basic understanding but require more practice.";
-        } else if (percentage > 20) {
+        } else if (percentage >= 20) {
           performanceLabel = "Below Average";
           overallFeedback = "You need to focus more on core technical concepts.";
         }
@@ -547,10 +554,10 @@
                 <span className="font-bold tracking-tight text-white uppercase text-sm">Ascend <span className="text-indigo-500">REPORT</span></span>
               </div>
               <button
-                onClick={() => window.location.href = 'mock_interview_setup.html'}
+                onClick={() => window.location.href = 'dashboard.html'}
                 className="text-slate-400 hover:text-white text-sm font-medium transition-colors"
               >
-                Exit
+                Dashboard
               </button>
             </header>
 
@@ -561,7 +568,7 @@
                   <p className="text-slate-400">{overallFeedback}</p>
                 </div>
                 <div className="text-right">
-                  <div className="text-sm uppercase font-bold text-indigo-400 mb-1">Performance: {performanceLabel}</div>
+                  <div className="text-sm uppercase font-bold text-indigo-400 mb-1">Performance: {performanceLabel} ({percentage}%)</div>
                   <div className="text-5xl font-black text-indigo-500">
                     {totalScoreObtained.toFixed(1)} <span className="text-2xl text-slate-500">/ {totalPossible}</span>
                   </div>
@@ -569,7 +576,7 @@
               </div>
 
               <div className="space-y-8">
-                {summaryData.attempts && summaryData.attempts.map((attempt, index) => (
+                {attempts.map((attempt, index) => (
                   <div key={index} className="bg-slate-900 border border-slate-800 rounded-xl p-8 shadow-xl">
                     <div className="flex justify-between items-start mb-6 border-b border-slate-800 pb-4">
                       <div className="w-3/4">
@@ -579,7 +586,7 @@
                       <div className="text-right">
                         <span className="text-slate-500 text-[10px] uppercase font-bold block mb-1">Score</span>
                         <span className="bg-indigo-900/40 text-indigo-300 px-4 py-1.5 rounded-lg text-sm font-bold border border-indigo-500/20">
-                          {attempt.score.toFixed(1)} / 10
+                          {(attempt.score || 0).toFixed(1)} / 10
                         </span>
                       </div>
                     </div>
@@ -588,7 +595,7 @@
                       <div>
                         <label className="text-[10px] uppercase font-bold text-slate-500 tracking-widest block mb-2">Your Answer</label>
                         <p className="text-slate-300 text-sm leading-relaxed bg-slate-950/50 p-4 rounded-lg border border-slate-800/40 italic">
-                          "{attempt.userAnswer}"
+                          "{attempt.userAnswer || 'No response recorded'}"
                         </p>
                       </div>
 
@@ -602,7 +609,7 @@
                       <div className="bg-indigo-900/10 p-5 rounded-xl border border-indigo-500/20">
                         <label className="text-[10px] uppercase font-bold text-indigo-400 tracking-widest block mb-2">Example of a stronger answer</label>
                         <p className="text-indigo-100/90 text-sm leading-relaxed">
-                          {attempt.exampleAnswer && attempt.exampleAnswer !== "N/A" ? attempt.exampleAnswer : "Refer to the example below to understand how this concept is typically explained."}
+                          {attempt.exampleAnswer && attempt.exampleAnswer !== "N/A" ? attempt.exampleAnswer : "Structure your response with STAR (Situation, Task, Action, Result) methodology and mention relevant industry concepts."}
                         </p>
                       </div>
                     </div>
@@ -612,7 +619,7 @@
 
               <div className="mt-12 mb-20 text-center">
                 <button
-                  onClick={() => window.location.href = 'mock_interview_setup.html'}
+                  onClick={() => window.location.href = 'dashboard.html'}
                   className="btn-accent px-10 py-4 rounded-full text-white font-bold shadow-2xl hover:scale-105 transition-transform"
                 >
                   Return to Dashboard

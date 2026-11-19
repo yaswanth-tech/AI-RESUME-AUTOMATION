@@ -145,7 +145,7 @@ router.post('/submit-bulk', async (req, res) => {
     // LOG ACTIVITY
     const { logActivity } = require('../utils/activityLogger');
     await logActivity(
-      "user_123", // TODO: Pass real userId from frontend or auth
+      test.userId || "guest",
       "Technical",
       "COMPLETE",
       `${subject} (${difficulty}) Test completed - Score: ${test.totalScore}`,

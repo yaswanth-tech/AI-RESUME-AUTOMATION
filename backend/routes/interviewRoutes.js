@@ -46,15 +46,15 @@ async function getNextInteraction(session) {
       const attemptedIds = session.attempts.map(a => a.questionId);
       const available = allQuestions.filter(q => !attemptedIds.includes(q.id));
 
+      // Exactly 5 questions total (1 intro + 4 main questions)
       if (session.attempts.length >= 5 || available.length === 0) {
-        // End of Main -> Move to CLOSING
         await prisma.interviewSession.update({
           where: { id: session.id },
           data: { currentStage: 'CLOSING' }
         });
         return {
-          type: 'MESSAGE',
-          text: "That concludes the questions section."
+          type: 'completed',
+          text: "Thank you for completing your interview. I will now compile your detailed evaluation report."
         };
       }
 
@@ -121,7 +121,14 @@ router.post('/get-next-step', async (req, res) => {
     }
 
     // Add progress meta
-    const progress = session.attempts.length + (session.currentStage === 'MAIN' ? 1 : 0);
+    let progress = 0;
+    if (session.currentStage === 'INTRO') {
+      progress = 1;
+    } else if (session.currentStage === 'MAIN') {
+      progress = Math.min(session.attempts.length + 1, 5);
+    } else if (session.attempts.length >= 5 || interaction.type === 'completed') {
+      progress = 5;
+    }
 
     res.json({
       success: true,
@@ -131,7 +138,7 @@ router.post('/get-next-step', async (req, res) => {
         type: interaction.type // MESSAGE or QUESTION
       },
       finished: interaction.type === 'completed',
-      progress: Math.min(progress, 5),
+      progress,
       total: 5
     });
 
@@ -254,24 +261,44 @@ router.post('/end-session', async (req, res) => {
       include: { attempts: true }
     });
 
-    // Log Activity
+    // Calculate score
     const total = session.attempts.length;
-    const avg = total > 0 ? (session.totalScore / total).toFixed(1) : 0;
+    const avgScore = total > 0 ? (session.totalScore / total) : 0;
+    const avgFormatted = avgScore.toFixed(1);
+    const percentage = total > 0 ? Math.min(100, Math.round((session.totalScore / (total * 10)) * 100)) : 0;
 
-    const { logActivity } = require('../utils/activityLogger');
-    await logActivity(
-      session.userId,
-      "MockInterview",
-      "COMPLETE",
-      `Mock Interview (${session.role}) completed - Avg Score: ${average}`,
-      parseFloat(average),
-      "COMPLETED"
-    );
+    // Log Activity for dashboard
+    if (session.userId && session.userId !== 'guest') {
+      try {
+        const { logActivity } = require('../utils/activityLogger');
+        await logActivity(
+          session.userId,
+          "MockInterview",
+          "COMPLETE",
+          `Mock Interview (${session.role}) completed - Score: ${percentage}% (${avgFormatted}/10 avg)`,
+          percentage,
+          "COMPLETED",
+          { sessionId: session.id, role: session.role, type: session.type, totalScore: session.totalScore }
+        );
+      } catch (logErr) {
+        console.warn(JSON.stringify({ event: 'interview_activity_log_write_failed' }));
+      }
+    }
 
-    res.json({ success: true, data: { attempts: session.attempts, totalScore: session.totalScore } });
+    res.json({
+      success: true,
+      data: {
+        attempts: session.attempts,
+        totalScore: session.totalScore,
+        averageScore: parseFloat(avgFormatted),
+        percentage,
+        role: session.role,
+        type: session.type
+      }
+    });
   } catch (e) {
     console.error(JSON.stringify({ event: 'interview_session_end_failed', status: 500 }));
-    res.status(500).json({ success: false });
+    res.status(500).json({ success: false, error: 'Could not end interview session.' });
   }
 });
 

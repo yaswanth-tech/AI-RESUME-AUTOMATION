@@ -8,7 +8,11 @@ router.get('/stats', requireAuth, requireCandidate, async (req, res) => {
     const stats = await getDashboardStats(req.user.id);
     res.json({ success: true, data: stats });
   } catch (error) {
-    console.error(JSON.stringify({ event: 'dashboard_stats_failed', status: 500 }));
+    const detail = String(error.message || error.cause?.message || '').toLowerCase();
+    const category = /max clients|connection pool|connection reset|timed? out/.test(detail) ? 'connection' :
+      /does not exist|unknown column|invalid field/.test(detail) ? 'schema' :
+      /prepared statement/.test(detail) ? 'prepared_statement' : 'database_query';
+    console.error(JSON.stringify({ event: 'dashboard_stats_failed', status: 500, errorCode: String(error.code || error.meta?.code || error.name || 'unknown').slice(0, 40), category }));
     res.status(500).json({ success: false, message: 'Could not load the dashboard.' });
   }
 });

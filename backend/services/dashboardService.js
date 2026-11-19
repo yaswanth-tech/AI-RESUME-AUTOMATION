@@ -30,7 +30,7 @@ async function getDashboardStats(userId) {
     userId ? prisma.atsAnalysis.findFirst({ where: { userId }, orderBy: { createdAt: 'desc' } }) : prisma.atsAnalysis.findFirst({ orderBy: { createdAt: 'desc' } }),
     userId ? prisma.technicalTest.findMany({ where: { userId, status: 'COMPLETED' } }) : [],
     userId ? prisma.communicationTest.findFirst({ where: { userId }, orderBy: { createdAt: 'desc' } }) : null,
-    userId ? prisma.interviewSession.findFirst({ where: { userId }, orderBy: { createdAt: 'desc' } }) : null,
+    userId ? prisma.interviewSession.findFirst({ where: { userId }, orderBy: { createdAt: 'desc' }, include: { attempts: true } }) : null,
     userId ? prisma.userRoadmapProgress.findFirst({ where: { userId } }) : null,
     userId ? prisma.userOpportunity.count({ where: { userId, status: 'SAVED' } }) : 0,
     userId ? prisma.activityLog.findMany({ where: { userId }, orderBy: { createdAt: 'desc' }, take: 20 }) : prisma.activityLog.findMany({ orderBy: { createdAt: 'desc' }, take: 10 }),
@@ -57,8 +57,14 @@ async function getDashboardStats(userId) {
   const commStatus = !commTest ? 'Not Started' : (commScore > 70 ? 'Fluent' : 'Practice Needed');
 
   // 5. Mock Interview Score
-  const interviewScore = interview ? (interview.totalScore || 0) : 0;
-  const interviewStatus = !interview ? 'Not Started' : 'Completed';
+  let interviewScore = 0;
+  let interviewStatus = 'Not Started';
+  if (interview) {
+    const isCompleted = interview.status === 'COMPLETED';
+    interviewStatus = isCompleted ? 'Completed' : 'In Progress';
+    const totalPossible = (interview.attempts && interview.attempts.length > 0) ? (interview.attempts.length * 10) : 50;
+    interviewScore = Math.min(100, Math.round(((interview.totalScore || 0) / totalPossible) * 100));
+  }
 
   // 6. Roadmap Progress
   let roadmapScore = 0;

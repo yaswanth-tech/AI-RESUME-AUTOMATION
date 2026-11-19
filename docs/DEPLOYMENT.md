@@ -4,7 +4,7 @@
 
 1. Use Node.js 20+ and a PostgreSQL database dedicated to this environment.
 2. Set `DATABASE_URL`, a unique random `JWT_SECRET` (32+ random characters), `PORT`, and an explicit `CORS_ORIGINS` list. Do not commit `.env` or print it in logs.
-   Set `DB_CONNECTION_LIMIT` to a value that keeps the total across all app instances below the Supabase pooler's connection limit; default is 5 per Node process.
+   For Supavisor hosts, the runtime defaults to transaction pooling on port 6543 with `pgbouncer=true`; Prisma CLI migrations continue to use the configured `DATABASE_URL` (usually session mode on port 5432). Set `DB_POOL_MODE=session` to opt out. Set `DB_CONNECTION_LIMIT` to budget app-side connections; default is 5 per Node process.
 3. Keep `AI_ENABLED=false` until privacy review, provider-account controls, budget limits and the candidate notice are approved. If enabling AI, configure `AI_PROVIDER=openai`, a supported `AI_MODEL`, `OPENAI_API_KEY`, timeout/rate settings and optional cost rates.
 4. Set `RESUME_STORAGE_DIR` to a persistent private volume outside the served frontend directory. Restrict directory access and backups. Ensure generated/reports directories are also private and durable if downloads must survive restarts.
 5. For scanned documents, mount Tesseract trained data and set `TESSDATA_DIR`/`OCR_LANGUAGES`. Without local trained data, Tesseract.js may attempt to fetch it. Decide network policy and verify language data licensing/source.

@@ -211,7 +211,7 @@
       }
 
       try {
-        const res = await fetch(`http://localhost:3002/api/test/result/${testId}`);
+        const res = await fetch(`/api/test/result/${testId}`);
         const data = await res.json();
 
         if (data.success) {

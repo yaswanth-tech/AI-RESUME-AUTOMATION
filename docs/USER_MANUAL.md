@@ -55,7 +55,7 @@ Uploads are limited to 5 MiB. AI-provider analysis is optional and disabled by d
 
 ## 5. Matching against a Job Description (JD)
 
-1. Click on the **🎯 Job Description Match** tab.
+1. Use the **Job Description Analysis** card on the resume page to analyze and save a JD at any time. After uploading a resume, open the **🎯 Job Description Match** tab to compare the JD with that resume.
 2. Paste the job description text into the text area **OR** upload a job requisition file (`.pdf`, `.docx`, `.txt`).
 3. Click **🎯 Match Against Resume**.
 4. The system outputs:
