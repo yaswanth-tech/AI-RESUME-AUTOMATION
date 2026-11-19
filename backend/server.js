@@ -20,8 +20,16 @@ const allowedOrigins = (process.env.CORS_ORIGINS || `http://localhost:${PORT}`)
 app.use(helmet({ contentSecurityPolicy: false }));
 app.use(cors({
   origin(origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) return callback(null, true);
-    const error = new Error('Origin is not allowed by CORS');
+    if (
+      !origin ||
+      allowedOrigins.includes(origin) ||
+      origin.endsWith('.vercel.app') ||
+      origin.includes('localhost') ||
+      origin.includes('127.0.0.1')
+    ) {
+      return callback(null, true);
+    }
+    const error = new Error('Origin is not allowed by CORS: ' + origin);
     error.status = 403;
     return callback(error);
   },
@@ -47,20 +55,47 @@ app.use((req, res, next) => {
 });
 
 /* ================= ROUTES ================= */
+const authRoutes = require('./routes/authRoutes');
 const interviewRoutes = require('./routes/interviewRoutes');
+const testRoutes = require('./routes/testRoutes');
+const commRoutes = require('./routes/commRoutes');
+const atsRoutes = require('./routes/atsRoutes');
+const opportunityRoutes = require('./routes/opportunityRoutes');
 const roadmapRoutes = require('./routes/roadmapRoutes');
+const diagnosisRoutes = require('./routes/diagnosisRoutes');
+const userRoutes = require('./routes/userRoutes');
+const dashboardRoutes = require('./routes/dashboardRoutes');
 
-// MOUNT ROUTES
-app.use('/api/auth', require('./routes/authRoutes'));
+// MOUNT ROUTES (Both /api/* and /* aliases for local & serverless compatibility)
+app.use('/api/auth', authRoutes);
+app.use('/auth', authRoutes);
+
 app.use('/api/interview', interviewRoutes);
-app.use('/api/test', require('./routes/testRoutes'));
-app.use('/api/comm', require('./routes/commRoutes'));
-app.use('/api/ats', require('./routes/atsRoutes'));
-app.use('/api/opportunities', require('./routes/opportunityRoutes'));
+app.use('/interview', interviewRoutes);
+
+app.use('/api/test', testRoutes);
+app.use('/test', testRoutes);
+
+app.use('/api/comm', commRoutes);
+app.use('/comm', commRoutes);
+
+app.use('/api/ats', atsRoutes);
+app.use('/ats', atsRoutes);
+
+app.use('/api/opportunities', opportunityRoutes);
+app.use('/opportunities', opportunityRoutes);
+
 app.use('/api/roadmaps', roadmapRoutes);
-app.use('/api/diagnosis', require('./routes/diagnosisRoutes'));
-app.use('/api/user', require('./routes/userRoutes'));
-app.use('/api/dashboard', require('./routes/dashboardRoutes'));
+app.use('/roadmaps', roadmapRoutes);
+
+app.use('/api/diagnosis', diagnosisRoutes);
+app.use('/diagnosis', diagnosisRoutes);
+
+app.use('/api/user', userRoutes);
+app.use('/user', userRoutes);
+
+app.use('/api/dashboard', dashboardRoutes);
+app.use('/dashboard', dashboardRoutes);
 
 // Direct download aliases for generated resumes & reports
 app.get('/api/resume/download/:filename', requireAuth, requireCandidate, (req, res) => {

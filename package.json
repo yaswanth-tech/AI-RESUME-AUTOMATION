@@ -4,11 +4,33 @@
   "description": "ASCEND Career & Resume Intelligence Platform",
   "main": "backend/server.js",
   "scripts": {
-    "build": "cd backend && npm install && npx prisma generate",
-    "vercel-build": "cd backend && npm install && npx prisma generate",
-    "postinstall": "cd backend && npm install && npx prisma generate",
+    "build": "prisma generate --schema=backend/prisma/schema.prisma",
+    "vercel-build": "prisma generate --schema=backend/prisma/schema.prisma",
+    "postinstall": "prisma generate --schema=backend/prisma/schema.prisma",
     "start": "cd backend && node server.js",
     "test": "cd backend && npm test"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.10.2",
+    "bcryptjs": "^3.0.3",
+    "cors": "^2.8.5",
+    "csv-parser": "^3.2.0",
+    "docx": "^9.15.4",
+    "dotenv": "^17.2.3",
+    "express": "^4.22.1",
+    "express-rate-limit": "^8.7.4",
+    "helmet": "^8.3.0",
+    "jsonwebtoken": "^9.0.3",
+    "mammoth": "^1.11.0",
+    "multer": "^1.4.5-lts.1",
+    "openai": "^6.17.0",
+    "pdf-parse": "^1.1.4",
+    "pdfjs-dist": "^3.11.174",
+    "pdfkit": "^0.20.2",
+    "prisma": "^5.10.2",
+    "tesseract.js": "^7.0.0",
+    "uuid": "^13.0.0",
+    "zod": "^4.6.7"
   },
   "engines": {
     "node": ">=20.0.0"
