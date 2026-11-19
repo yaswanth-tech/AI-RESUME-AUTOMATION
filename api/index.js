@@ -1,3 +1,3 @@
-module.exports = (req, res) => {
-  res.json({ status: "ok", time: new Date().toISOString() });
-};
+const app = require('../backend/server');
+
+module.exports = app;

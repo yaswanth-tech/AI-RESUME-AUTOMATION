@@ -6,7 +6,6 @@ const prisma = require('../utils/prismaClient');
 const { requireAuth, getJwtSecret } = require('../middleware/authMiddleware');
 const { authLimiter } = require('../middleware/rateLimiter');
 
-
 // Helper to generate JWT token (expires in 7 days)
 function generateToken(user) {
   const secret = getJwtSecret();
@@ -46,11 +45,10 @@ router.post('/signup', authLimiter, async (req, res) => {
 
     const normalizedEmail = email.trim().toLowerCase();
 
-    // Check if email already registered
+    // Check if email already registered (case‑insensitive)
     const existing = await prisma.user.findUnique({
       where: { email: normalizedEmail }
     });
-
     if (existing) {
       return res.status(409).json({ success: false, error: 'An account with this email already exists.' });
     }
@@ -95,21 +93,25 @@ router.post('/signup', authLimiter, async (req, res) => {
 router.post('/login', authLimiter, async (req, res) => {
   try {
     const { email, username, password } = req.body;
+    // Normalise identifier – prioritize explicit email field for clarity
     const identifier = (email || username || '').trim().toLowerCase();
 
     if (!identifier || !password) {
       return res.status(400).json({ success: false, error: 'Email/username and password are required.' });
     }
 
-    // Try finding by email first, or fallback to name if username provided
-    let user = await prisma.user.findFirst({
-      where: {
-        OR: [
-          { email: identifier },
-          { name: { equals: identifier, mode: 'insensitive' } }
-        ]
-      }
+    // Prefer email lookup for deterministic behaviour
+    let user = await prisma.user.findUnique({
+      where: { email: identifier }
     });
+    // Fallback to username (stored in name) if not found by email
+    if (!user) {
+      user = await prisma.user.findFirst({
+        where: {
+          name: { equals: identifier, mode: 'insensitive' }
+        }
+      });
+    }
 
     if (!user) {
       return res.status(401).json({ success: false, error: 'Invalid email or password.' });
