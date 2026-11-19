@@ -74,8 +74,12 @@ app.get('/api/reports/download/:filename', requireAuth, requireCandidate, (req, 
 /* ================= UPLOAD DIRECTORIES ================= */
 const uploadDirs = ['uploads', 'uploads/resumes', 'uploads/generated', 'uploads/reports'];
 uploadDirs.forEach(dir => {
-  const dirPath = path.join(__dirname, dir);
-  if (!fs.existsSync(dirPath)) fs.mkdirSync(dirPath, { recursive: true });
+  try {
+    const dirPath = path.join(__dirname, dir);
+    if (!fs.existsSync(dirPath)) fs.mkdirSync(dirPath, { recursive: true });
+  } catch (err) {
+    // Non-fatal on serverless environments where fs is read-only
+  }
 });
 
 /* ================= STATIC FILES ================= */
@@ -93,15 +97,19 @@ app.use((error, req, res, next) => {
   res.status(status).json({ success: false, error: status >= 500 ? 'The request could not be completed.' : error.message });
 });
 
-/* ================= START SERVER ================= */
-app.listen(PORT, () => {
-  const aiProvider = process.env.AI_PROVIDER || 'openai';
-  const aiModel = process.env.AI_MODEL || process.env.OPENAI_MODEL || 'gpt-6-luna';
-  const hasKey = aiProvider === 'openai' ? Boolean(process.env.OPENAI_API_KEY) : Boolean(process.env.GEMINI_API_KEY);
-  const aiAvailable = process.env.AI_ENABLED === 'true' && aiProvider === 'openai' && hasKey;
+module.exports = app;
 
-  console.log(`✅ ASCEND Backend running at http://localhost:${PORT}`);
-  console.log(`   - AI Engine: ${aiAvailable ? `OPENAI (${aiModel})` : 'Deterministic rule-based fallback (AI disabled or unavailable)'}`);
-  console.log(`   - Database: PostgreSQL via Prisma`);
-  console.log(`   - Authentication: JWT + Hashed Passwords`);
-});
+/* ================= START SERVER ================= */
+if (!process.env.VERCEL) {
+  app.listen(PORT, () => {
+    const aiProvider = process.env.AI_PROVIDER || 'openai';
+    const aiModel = process.env.AI_MODEL || process.env.OPENAI_MODEL || 'gpt-6-luna';
+    const hasKey = aiProvider === 'openai' ? Boolean(process.env.OPENAI_API_KEY) : Boolean(process.env.GEMINI_API_KEY);
+    const aiAvailable = process.env.AI_ENABLED === 'true' && aiProvider === 'openai' && hasKey;
+
+    console.log(`✅ ASCEND Backend running at http://localhost:${PORT}`);
+    console.log(`   - AI Engine: ${aiAvailable ? `OPENAI (${aiModel})` : 'Deterministic rule-based fallback (AI disabled or unavailable)'}`);
+    console.log(`   - Database: PostgreSQL via Prisma`);
+    console.log(`   - Authentication: JWT + Hashed Passwords`);
+  });
+}
