@@ -244,6 +244,7 @@
       margin-bottom: 10px;
     }
   </style>
+  <link rel="stylesheet" href="css/app-theme.css">
 </head>
 
 <body>
@@ -263,7 +264,7 @@
       </div>
 
       <!-- LOGIN PANEL -->
-      <div id="panel-login" class="panel">
+      <div id="panel-login" class="panel" aria-hidden="false">
         <h2>Login</h2>
         <p class="lead">Enter your account details.</p>
         <form id="loginForm" onsubmit="return handleLogin(event)">
@@ -326,13 +327,21 @@
       if (name === 'signup') {
         login.classList.add('hidden');
         signup.classList.remove('hidden');
+        login.setAttribute('aria-hidden', 'true');
+        signup.setAttribute('aria-hidden', 'false');
         tabLogin.classList.remove('active');
         tabSignup.classList.add('active');
+        tabLogin.setAttribute('aria-selected', 'false');
+        tabSignup.setAttribute('aria-selected', 'true');
       } else {
         signup.classList.add('hidden');
         login.classList.remove('hidden');
+        signup.setAttribute('aria-hidden', 'true');
+        login.setAttribute('aria-hidden', 'false');
         tabSignup.classList.remove('active');
         tabLogin.classList.add('active');
+        tabSignup.setAttribute('aria-selected', 'false');
+        tabLogin.setAttribute('aria-selected', 'true');
       }
     }
 
@@ -428,5 +437,11 @@
         alert("Server error connecting to signup service.");
       }
       return false;
+    }
+
+    // Let landing-page links open the intended authentication panel directly.
+    const authMode = new URLSearchParams(window.location.search).get('mode');
+    if (authMode === 'signup' || authMode === 'login') {
+      showPanel(authMode);
     }
   </script>

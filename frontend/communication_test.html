@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/navbar.css">
   <style>
     :root {
       --primary: #8B5CF6;
@@ -315,14 +316,13 @@
       margin-top: 15px;
     }
   </style>
+  <link rel="stylesheet" href="css/app-theme.css">
 </head>
 
 <body>
+<div id="app-navbar"></div>
   <div class="container" id="test-view">
     <header>
-      <div style="position: absolute; top: 30px; right: 40px;">
-        <a href="index.html" style="color:#ef4444; text-decoration:none; font-weight:600;">Logout</a>
-      </div>
       <h1 class="test-title">Communication Test</h1>
       <p id="task-counter" style="color: var(--text-secondary)">Task 1 of 5</p>
       <div class="progress-bar">
@@ -430,6 +430,7 @@
       }, 300);
     }
   </script>
+  <script src="js/navbar.js"></script>
 </body>
 
 </html>

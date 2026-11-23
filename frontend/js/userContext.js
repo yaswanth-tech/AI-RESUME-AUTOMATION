@@ -14,7 +14,7 @@ const UserContext = {
     localStorage.removeItem('ascend_user');
     localStorage.removeItem('ascend_token');
     localStorage.removeItem('ATS_DATA');
-    window.location.href = 'index.html';
+    window.location.href = 'home.html';
   },
 
   getUser() {
