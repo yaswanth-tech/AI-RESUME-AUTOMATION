@@ -38,10 +38,14 @@
   <script src="js/navbar.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', async () => {
-      const user = await UserContext.fetchUser();
-      if (user) {
-        document.getElementById('profile-name').textContent = user.name || 'ASCEND User';
-        document.getElementById('profile-email').textContent = user.email || 'Not available';
+      try {
+        const user = await UserContext.fetchUser();
+        if (user) {
+          document.getElementById('profile-name').textContent = user.name || 'ASCEND User';
+          document.getElementById('profile-email').textContent = user.email || 'Not available';
+        }
+      } catch (error) {
+        if (!UserContext.isSessionExpired(error)) console.error('Unable to load profile details:', error);
       }
     });
   </script>

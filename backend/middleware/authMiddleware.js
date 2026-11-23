@@ -37,11 +37,37 @@ async function requireAuth(req, res, next) {
       });
     }
 
-    const decoded = jwt.verify(token, secret);
-    const user = await prisma.user.findUnique({
-      where: { id: decoded.id },
-      select: { id: true, name: true, email: true, tourCompleted: true, role: true }
-    });
+    let decoded;
+    try {
+      decoded = jwt.verify(token, secret);
+    } catch (error) {
+      if (error instanceof jwt.JsonWebTokenError || error instanceof jwt.TokenExpiredError) {
+        return res.status(401).json({
+          success: false,
+          error: 'Your session has expired. Please log in again.'
+        });
+      }
+
+      console.error('Unexpected error while verifying authentication token:', error);
+      return res.status(500).json({
+        success: false,
+        error: 'Server error while checking your session.'
+      });
+    }
+
+    let user;
+    try {
+      user = await prisma.user.findUnique({
+        where: { id: decoded.id },
+        select: { id: true, name: true, email: true, tourCompleted: true, role: true }
+      });
+    } catch (error) {
+      console.error('Error while loading authenticated user:', error);
+      return res.status(500).json({
+        success: false,
+        error: 'Server error while checking your session.'
+      });
+    }
 
     if (!user) {
       return res.status(401).json({

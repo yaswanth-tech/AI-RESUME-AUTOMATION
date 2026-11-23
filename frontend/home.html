@@ -4,120 +4,299 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#FFFFFF">
-  <meta name="description" content="ASCEND is an AI-powered career and resume intelligence platform for students and job seekers.">
+  <meta name="description" content="ASCEND brings resume intelligence, skill assessments, interview practice and career planning into one platform.">
   <title>ASCEND — Build Your Career</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/navbar.css">
-  <link rel="stylesheet" href="css/app-theme.css">
+  <link rel="stylesheet" href="css/home.css">
 </head>
 <body class="landing-page">
   <div id="app-navbar"></div>
 
   <main>
-    <section class="hero container" id="home">
-      <div class="hero-copy">
-        <div class="eyebrow"><span class="eyebrow-dot"></span> Career intelligence for what comes next</div>
-        <h1>Build Your Career. <span>Master Your Potential.</span></h1>
+    <section class="hero home-container" id="home">
+      <div class="hero-copy reveal">
+        <p class="eyebrow"><span class="eyebrow-dot"></span> Career intelligence for what comes next</p>
+        <h1>Build Your Career.<br><span>Master Your Potential.</span></h1>
         <p class="hero-description">ASCEND is an AI-powered career and resume intelligence platform designed to help students and job seekers analyze their resumes, evaluate their skills, prepare for interviews and discover the right career opportunities.</p>
         <div class="hero-actions">
           <a class="button button-primary" href="index.html?mode=signup">Get Started Free <span aria-hidden="true">↗</span></a>
           <a class="button button-outline" href="#features">Explore Features <span aria-hidden="true">↓</span></a>
         </div>
       </div>
-      <div class="hero-visual" aria-label="AI career dashboard illustration">
+
+      <div class="hero-visual reveal" role="img" aria-label="Illustration of the ASCEND career workspace">
         <div class="visual-glow"></div>
-        <div class="preview-card">
-          <div class="preview-top"><span>Career Dashboard</span><span class="preview-status">Personal workspace</span></div>
-          <div class="preview-heading">Your career overview</div>
-          <div class="preview-grid">
-            <div class="mini-card">
-              <span class="mini-icon">↗</span>
-              <strong>Resume</strong>
+        <div class="dashboard-illustration">
+          <div class="illustration-toolbar"><span></span><span></span><span></span><i></i></div>
+          <div class="illustration-grid">
+            <article class="illustration-card resume-widget">
+              <span class="illustration-icon blue-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M7 3.75h7l4 4v12.5H7a2 2 0 0 1-2-2v-12.5a2 2 0 0 1 2-2Z"/><path d="M14 4v4h4M8 12h7M8 15h7M8 18h4"/></svg>
+              </span>
+              <strong>Resume Analysis</strong>
               <div class="skeleton-lines"><i></i><i></i><i></i></div>
-            </div>
-            <div class="mini-card">
-              <span class="mini-icon purple">✦</span>
-              <strong>Skills</strong>
-              <div class="skill-dots"><i></i><i></i><i></i></div>
-            </div>
+              <div class="highlight-line"></div>
+            </article>
+            <article class="illustration-card skill-widget">
+              <span class="illustration-icon violet-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M12 3.5 14.2 9l5.8 2-5.8 2L12 18.5 9.8 13 4 11l5.8-2L12 3.5Z"/><path d="m19 16 .9 2.1L22 19l-2.1.9L19 22l-.9-2.1L16 19l2.1-.9L19 16Z"/></svg>
+              </span>
+              <strong>Skill Gap</strong>
+              <div class="skill-bars"><i></i><i></i><i></i></div>
+            </article>
           </div>
-          <div class="roadmap-preview">
-            <div class="roadmap-title">Next steps</div>
-            <div class="roadmap-step"><i class="step-done">✓</i><span>Review career profile</span></div>
-            <div class="roadmap-step"><i></i><span>Practice interview answers</span></div>
-            <div class="roadmap-step"><i></i><span>Explore matching roles</span></div>
-          </div>
+          <article class="illustration-wide interview-widget">
+            <span class="illustration-icon violet-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M12 14a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v5a3 3 0 0 0 3 3Z"/><path d="M6.5 10.5a5.5 5.5 0 0 0 11 0M12 16v4m-3 0h6"/></svg>
+            </span>
+            <strong>Interview Practice</strong>
+            <div class="waveform" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+          </article>
+          <article class="illustration-wide roadmap-widget">
+            <span class="illustration-icon blue-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M4 5.5 9 3l6 2.5L20 3v15.5L15 21l-6-2.5L4 21V5.5Z"/><path d="M9 3v15.5m6-13v15.5"/></svg>
+            </span>
+            <strong>Career Roadmap</strong>
+            <div class="roadmap-lines"><i></i><i></i><i></i></div>
+          </article>
         </div>
-        <div class="floating-note"><span class="note-icon">✦</span><div><strong>AI-guided insights</strong><small>Turn goals into clear actions.</small></div></div>
+        <div class="floating-orb orb-one" aria-hidden="true"></div>
+        <div class="floating-orb orb-two" aria-hidden="true"></div>
+      </div>
+    </section>
+
+    <section class="platform-strip" aria-label="ASCEND platform tools">
+      <div class="home-container platform-list">
+        <span class="platform-intro">One workspace for your next step</span>
+        <a href="#resume-analyzer"><span aria-hidden="true">▤</span> Resume Analyzer</a>
+        <a href="#assessment-tools"><span aria-hidden="true">✓</span> Assessments</a>
+        <a href="#assessment-tools"><span aria-hidden="true">◉</span> Mock Interview</a>
+        <a href="#career-planning"><span aria-hidden="true">⌁</span> Roadmap</a>
+        <a href="#opportunities"><span aria-hidden="true">◇</span> Opportunities</a>
       </div>
     </section>
 
     <section class="section about-section" id="about">
-      <div class="container section-heading">
-        <div class="eyebrow"><span class="eyebrow-dot"></span> About ASCEND</div>
-        <h2>Career clarity, <span>built around you.</span></h2>
-        <p>ASCEND brings resume intelligence, skill evaluation, interview preparation and career planning into one thoughtful platform. It helps you understand where you are, identify what to improve and move confidently toward what comes next.</p>
+      <div class="home-container about-layout">
+        <div class="section-copy reveal">
+          <p class="eyebrow"><span class="eyebrow-dot"></span> About ASCEND</p>
+          <h2>Career clarity,<br><span>built around you.</span></h2>
+          <p>ASCEND brings resume intelligence, skill evaluation, interview preparation and career planning into one thoughtful platform. Understand where you are, identify what to improve and take practical steps toward what comes next.</p>
+        </div>
+        <div class="pillar-grid">
+          <article class="pillar-card reveal">
+            <span class="pillar-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 3.75h7l4 4v12.5H7a2 2 0 0 1-2-2v-12.5a2 2 0 0 1 2-2Z"/><path d="M14 4v4h4M8 12h7M8 15h7"/></svg></span>
+            <h3>Resume Intelligence</h3><p>Review resume structure, role fit and improvement opportunities.</p>
+          </article>
+          <article class="pillar-card reveal">
+            <span class="pillar-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m12 3 2.3 5.2L20 10l-5.7 2.1L12 18l-2.3-5.9L4 10l5.7-1.8L12 3Z"/><path d="M19 16v5m-2.5-2.5h5"/></svg></span>
+            <h3>Skill Assessment</h3><p>Explore technical knowledge and communication skills through practice.</p>
+          </article>
+          <article class="pillar-card reveal">
+            <span class="pillar-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 14a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v5a3 3 0 0 0 3 3Z"/><path d="M6.5 10.5a5.5 5.5 0 0 0 11 0M12 16v4m-3 0h6"/></svg></span>
+            <h3>Interview Preparation</h3><p>Practice spoken responses and review structured feedback.</p>
+          </article>
+          <article class="pillar-card reveal" id="career-planning">
+            <span class="pillar-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 5.5 9 3l6 2.5L20 3v15.5L15 21l-6-2.5L4 21V5.5Z"/><path d="M9 3v15.5m6-13v15.5"/></svg></span>
+            <h3>Career Planning</h3><p>Connect a career diagnosis with a personalized, trackable roadmap.</p>
+          </article>
+        </div>
       </div>
     </section>
 
     <section class="section features-section" id="features">
-      <div class="container">
-        <div class="section-heading">
-          <div class="eyebrow"><span class="eyebrow-dot"></span> Features</div>
-          <h2>Everything you need to <span>grow.</span></h2>
-          <p>Purpose-built tools for each stage of your career journey.</p>
+      <div class="home-container">
+        <div class="section-heading reveal">
+          <p class="eyebrow"><span class="eyebrow-dot"></span> Features</p>
+          <h2>Tools for every step<br><span>forward.</span></h2>
+          <p>Use connected tools to understand your profile, prepare with purpose and plan what comes next.</p>
         </div>
         <div class="feature-grid">
-          <article class="feature-card"><div class="feature-icon">↗</div><h3>AI Resume Analyzer</h3><p>Understand resume impact, identify gaps and receive practical improvements.</p></article>
-          <article class="feature-card"><div class="feature-icon">✓</div><h3>Technical Assessment</h3><p>Evaluate core technical abilities and discover areas to strengthen.</p></article>
-          <article class="feature-card"><div class="feature-icon">◉</div><h3>Communication Assessment</h3><p>Build clearer, more confident professional communication.</p></article>
-          <article class="feature-card"><div class="feature-icon">✦</div><h3>AI Mock Interview</h3><p>Practice realistic interview scenarios and improve with guided feedback.</p></article>
-          <article class="feature-card"><div class="feature-icon">⌁</div><h3>Career Diagnosis</h3><p>Connect your skills and interests with suitable career directions.</p></article>
-          <article class="feature-card"><div class="feature-icon">⌂</div><h3>Personalized Career Roadmap</h3><p>Turn a career goal into an actionable, personalized plan.</p></article>
-          <article class="feature-card"><div class="feature-icon">◇</div><h3>Opportunity Intelligence</h3><p>Discover relevant opportunities based on your profile and goals.</p></article>
+          <article class="feature-card reveal">
+            <span class="feature-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 3.75h7l4 4v12.5H7a2 2 0 0 1-2-2v-12.5a2 2 0 0 1 2-2Z"/><path d="M14 4v4h4M8 12h7M8 15h7M8 18h4"/></svg></span>
+            <h3>AI Resume Analyzer</h3><p>Review resume content and find practical ways to improve it.</p>
+            <ul><li>ATS evaluation and role alignment</li><li>Matched and missing job skills</li><li>Rewrite ideas and export options</li></ul>
+            <a class="learn-more" href="#resume-analyzer">Learn more <span aria-hidden="true">→</span></a>
+          </article>
+          <article class="feature-card reveal">
+            <span class="feature-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/><path d="M21 12a9 9 0 1 1-3-6.7"/></svg></span>
+            <h3>Technical Assessment</h3><p>Practice topics covered by the project's technical tests.</p>
+            <ul><li>Core computing subjects</li><li>Easy, medium and hard levels</li><li>Rule-based scoring and feedback</li></ul>
+            <a class="learn-more" href="#assessment-tools">Learn more <span aria-hidden="true">→</span></a>
+          </article>
+          <article class="feature-card reveal">
+            <span class="feature-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 18v-1a4 4 0 0 1 4-4h2"/><circle cx="9" cy="7" r="3"/><path d="M14 11h6m-6 4h6m-6 4h4"/></svg></span>
+            <h3>Communication Assessment</h3><p>Practice clear spoken responses in guided communication tasks.</p>
+            <ul><li>Read-aloud and response prompts</li><li>Browser speech-to-text support</li><li>Timed practice with feedback</li></ul>
+            <a class="learn-more" href="#assessment-tools">Learn more <span aria-hidden="true">→</span></a>
+          </article>
+          <article class="feature-card reveal">
+            <span class="feature-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 14a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v5a3 3 0 0 0 3 3Z"/><path d="M6.5 10.5a5.5 5.5 0 0 0 11 0M12 16v4m-3 0h6"/></svg></span>
+            <h3>AI Mock Interview</h3><p>Practice interview answers aloud and review the session feedback.</p>
+            <ul><li>Choose an interview role</li><li>Respond using your microphone</li><li>Review examples and guidance</li></ul>
+            <a class="learn-more" href="#assessment-tools">Learn more <span aria-hidden="true">→</span></a>
+          </article>
+          <article class="feature-card reveal">
+            <span class="feature-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4 4M8 11h6m-3-3v6"/></svg></span>
+            <h3>Career Diagnosis</h3><p>Consider your background, interests and current skills.</p>
+            <ul><li>Set a target career direction</li><li>Review skill gaps and risk factors</li><li>Use the result to plan next steps</li></ul>
+            <a class="learn-more" href="#career-planning">Learn more <span aria-hidden="true">→</span></a>
+          </article>
+          <article class="feature-card reveal">
+            <span class="feature-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 5.5 9 3l6 2.5L20 3v15.5L15 21l-6-2.5L4 21V5.5Z"/><path d="M9 3v15.5m6-13v15.5"/></svg></span>
+            <h3>Personalized Roadmap</h3><p>Turn a career target into a sequence of trackable actions.</p>
+            <ul><li>Explore roadmap tracks</li><li>Work through phases and tasks</li><li>Keep progress in your account</li></ul>
+            <a class="learn-more" href="#career-planning">Learn more <span aria-hidden="true">→</span></a>
+          </article>
+          <article class="feature-card reveal">
+            <span class="feature-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 6.5h16M6 4v5m12-5v5M5 10h14v10H5z"/><path d="M8 14h3m2 0h3m-8 3h3"/></svg></span>
+            <h3>Opportunity Intelligence</h3><p>Browse opportunities relevant to your skills and career interests.</p>
+            <ul><li>Internships, hackathons and scholarships</li><li>Filter by difficulty and skill area</li><li>Open opportunity-specific guidance</li></ul>
+            <a class="learn-more" href="#opportunities">Learn more <span aria-hidden="true">→</span></a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section resume-spotlight" id="resume-analyzer">
+      <div class="home-container spotlight-layout">
+        <div class="resume-visual reveal" role="img" aria-label="Illustration of resume sections and review highlights">
+          <div class="resume-sheet">
+            <div class="resume-topline"><span></span><i></i></div>
+            <div class="resume-heading-shape"></div>
+            <div class="resume-section-label">Profile</div>
+            <div class="resume-lines"><i></i><i></i><i></i></div>
+            <div class="resume-section-label">Experience</div>
+            <div class="resume-highlight"><i></i><i></i></div>
+            <div class="resume-lines short-lines"><i></i><i></i></div>
+            <div class="resume-section-label">Skills</div>
+            <div class="resume-skill-shapes"><i></i><i></i><i></i><i></i></div>
+          </div>
+          <div class="resume-note note-ats"><span>ATS review</span><i></i><i></i></div>
+          <div class="resume-note note-skills"><span>Skill match</span><i></i><i></i></div>
+        </div>
+        <div class="spotlight-copy reveal">
+          <p class="eyebrow"><span class="eyebrow-dot"></span> Resume Analyzer</p>
+          <h2>Make your experience<br><span>easier to understand.</span></h2>
+          <p>Upload a PDF or DOCX resume up to 5 MB to review its structure, explore role alignment and work through grounded suggestions.</p>
+          <ul class="check-list">
+            <li>ATS evaluation and job description matching, including matched and missing skills</li>
+            <li>AI insights with the “Why” behind suggestions, when AI is enabled</li>
+            <li>Side-by-side summary and bullet rewrites for review</li>
+            <li>Three resume templates plus downloadable PDF/DOCX exports and analysis reports</li>
+          </ul>
+          <a class="button button-primary" href="index.html?mode=signup">Explore Resume Analyzer <span aria-hidden="true">↗</span></a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section tools-spotlight" id="assessment-tools">
+      <div class="home-container">
+        <div class="section-heading reveal">
+          <p class="eyebrow"><span class="eyebrow-dot"></span> Practice and prepare</p>
+          <h2>Build confidence through<br><span>focused practice.</span></h2>
+          <p>Choose an assessment or interview practice that fits the skills you want to strengthen.</p>
+        </div>
+        <div class="tool-grid">
+          <article class="tool-card reveal">
+            <span class="tool-icon" aria-hidden="true">✓</span>
+            <h3>Technical Test</h3>
+            <p>Explore algorithms, data structures, DBMS, operating systems, computer networks, Java, Python, OOPS and web technologies, with easy, medium and hard levels.</p>
+            <a class="learn-more" href="index.html?mode=signup">Start with a free account <span aria-hidden="true">→</span></a>
+          </article>
+          <article class="tool-card reveal">
+            <span class="tool-icon" aria-hidden="true">◉</span>
+            <h3>Communication Test</h3>
+            <p>Practice spoken communication through guided prompts, a minimum speaking-time check and a live transcript where browser speech recognition is supported.</p>
+            <a class="learn-more" href="index.html?mode=signup">Practice communication <span aria-hidden="true">→</span></a>
+          </article>
+          <article class="tool-card reveal">
+            <span class="tool-icon" aria-hidden="true">✦</span>
+            <h3>Mock Interview</h3>
+            <p>Set an interview role, answer questions aloud and review feedback with example responses after practice.</p>
+            <a class="learn-more" href="index.html?mode=signup">Practice an interview <span aria-hidden="true">→</span></a>
+          </article>
+          <article class="tool-card opportunity-card reveal" id="opportunities">
+            <span class="tool-icon" aria-hidden="true">◇</span>
+            <h3>Career Opportunities</h3>
+            <p>Explore internships, hackathons and scholarships, then filter the list by focus, difficulty and skill area.</p>
+            <a class="learn-more" href="index.html?mode=signup">Explore opportunities <span aria-hidden="true">→</span></a>
+          </article>
         </div>
       </div>
     </section>
 
     <section class="section journey-section" id="how-it-works">
-      <div class="container journey-layout">
-        <div class="journey-intro">
-          <div class="eyebrow"><span class="eyebrow-dot"></span> How ASCEND Works</div>
-          <h2>A clear path from potential to <span>progress.</span></h2>
-          <p>Move through a simple, connected process that turns insight into action.</p>
+      <div class="home-container">
+        <div class="section-heading reveal">
+          <p class="eyebrow"><span class="eyebrow-dot"></span> How ASCEND Works</p>
+          <h2>A clear path from potential<br><span>to progress.</span></h2>
+          <p>Move through a connected process that turns insight into practical action.</p>
         </div>
-        <div class="journey-steps">
-          <article><span class="journey-marker">1</span><div><h3>Create your profile</h3><p>Set up your career goals and background.</p></div></article>
-          <article><span class="journey-marker">2</span><div><h3>Analyze your resume</h3><p>Get clear, structured feedback on where you stand.</p></div></article>
-          <article><span class="journey-marker">3</span><div><h3>Assess your skills</h3><p>Measure strengths and identify practical opportunities to improve.</p></div></article>
-          <article><span class="journey-marker">4</span><div><h3>Prepare with AI</h3><p>Practice assessments and interviews in a focused environment.</p></div></article>
-          <article><span class="journey-marker">5</span><div><h3>Follow your roadmap</h3><p>Explore roles and take the next step toward career readiness.</p></div></article>
+        <ol class="journey-steps">
+          <li class="reveal"><span class="journey-marker">1</span><h3>Create your profile</h3><p>Set up an account and share your career direction.</p></li>
+          <li class="reveal"><span class="journey-marker">2</span><h3>Review your resume</h3><p>Explore resume analysis and role-focused feedback.</p></li>
+          <li class="reveal"><span class="journey-marker">3</span><h3>Assess your skills</h3><p>Practice technical and communication assessments.</p></li>
+          <li class="reveal"><span class="journey-marker">4</span><h3>Prepare for interviews</h3><p>Practice responses and review feedback.</p></li>
+          <li class="reveal"><span class="journey-marker">5</span><h3>Follow your roadmap</h3><p>Track next steps and explore relevant opportunities.</p></li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="section audience-section" id="who-its-for">
+      <div class="home-container">
+        <div class="section-heading reveal">
+          <p class="eyebrow"><span class="eyebrow-dot"></span> Who It’s For</p>
+          <h2>Support for your<br><span>next chapter.</span></h2>
+        </div>
+        <div class="audience-grid">
+          <article class="audience-card reveal"><span aria-hidden="true">✧</span><h3>Students</h3><p>Explore your strengths, practice foundational skills and plan toward a future role.</p></article>
+          <article class="audience-card reveal"><span aria-hidden="true">↗</span><h3>Fresh graduates</h3><p>Review your resume, prepare for interviews and discover opportunities to pursue.</p></article>
+          <article class="audience-card reveal"><span aria-hidden="true">⌁</span><h3>Job seekers and career switchers</h3><p>Connect transferable experience with a focused plan for your next direction.</p></article>
         </div>
       </div>
     </section>
 
     <section class="section why-section" id="why-ascend">
-      <div class="container">
-        <div class="section-heading">
-          <div class="eyebrow"><span class="eyebrow-dot"></span> Why ASCEND</div>
-          <h2>Designed for <span>career momentum.</span></h2>
+      <div class="home-container">
+        <div class="section-heading reveal">
+          <p class="eyebrow"><span class="eyebrow-dot"></span> Why ASCEND</p>
+          <h2>Designed for<br><span>career momentum.</span></h2>
         </div>
         <div class="why-grid">
-          <article><span>01</span><h3>Personalized insights</h3><p>Recommendations adapt to your goals and profile.</p></article>
-          <article><span>02</span><h3>One connected platform</h3><p>Keep planning, assessment and preparation together.</p></article>
-          <article><span>03</span><h3>Actionable feedback</h3><p>Know what to improve and how to move forward.</p></article>
-          <article><span>04</span><h3>Interview readiness</h3><p>Practice in a structured, realistic environment.</p></article>
-          <article><span>05</span><h3>Clear career direction</h3><p>Translate ambition into focused next steps.</p></article>
-          <article><span>06</span><h3>Built for growth</h3><p>Use a flexible roadmap that evolves with you.</p></article>
+          <article class="why-card reveal"><span class="why-icon" aria-hidden="true">✦</span><h3>Personalized insights</h3><p>Recommendations can be grounded in your goals and profile.</p></article>
+          <article class="why-card reveal"><span class="why-icon" aria-hidden="true">⌂</span><h3>One connected workspace</h3><p>Keep assessment, preparation and career planning together.</p></article>
+          <article class="why-card reveal"><span class="why-icon" aria-hidden="true">✓</span><h3>Actionable feedback</h3><p>Review concrete suggestions and decide what to improve.</p></article>
+          <article class="why-card reveal"><span class="why-icon" aria-hidden="true">◉</span><h3>Practice at your pace</h3><p>Use structured tests and interview practice to build confidence.</p></article>
+          <article class="why-card reveal"><span class="why-icon" aria-hidden="true">⌁</span><h3>Clear next steps</h3><p>Translate a target role into focused career planning.</p></article>
+          <article class="why-card reveal"><span class="why-icon" aria-hidden="true">◇</span><h3>Opportunity discovery</h3><p>Browse internships, hackathons and scholarships in one place.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section faq-section" id="faq">
+      <div class="home-container faq-layout">
+        <div class="faq-intro reveal">
+          <p class="eyebrow"><span class="eyebrow-dot"></span> Frequently Asked Questions</p>
+          <h2>Good to know<br><span>before you begin.</span></h2>
+        </div>
+        <div class="faq-list">
+          <details class="faq-item reveal"><summary>Which resume files can I upload?</summary><p>The Resume Analyzer accepts PDF and DOCX files up to 5 MB.</p></details>
+          <details class="faq-item reveal"><summary>What does the Resume Analyzer provide?</summary><p>It provides ATS evaluation, job description matching with matched and missing skills, reviewable rewrite suggestions, resume templates and downloadable exports or reports.</p></details>
+          <details class="faq-item reveal"><summary>Which assessments are available?</summary><p>ASCEND includes a technical test, a communication test and mock interview practice. The technical test offers easy, medium and hard levels.</p></details>
+          <details class="faq-item reveal"><summary>Do I need an account to start?</summary><p>Create a free account using Sign Up to access the application tools and save your work.</p></details>
+          <details class="faq-item reveal"><summary>How are personal details handled for AI insights?</summary><p>When AI is enabled, the resume analysis service excludes raw text, name, email and phone fields from its prompt source and redacts recognized email addresses, phone numbers, URLs and street addresses from selected text.</p></details>
+          <details class="faq-item reveal"><summary>Can I review suggestions before applying them?</summary><p>Resume summary and bullet rewrites are shown for review so you can choose whether to apply them.</p></details>
         </div>
       </div>
     </section>
 
     <section class="closing-section" id="get-started">
-      <div class="container closing-inner">
-        <div class="eyebrow"><span class="eyebrow-dot"></span> Your Career Journey Starts Here</div>
+      <div class="home-container closing-inner reveal">
+        <p class="eyebrow"><span class="eyebrow-dot"></span> Your Career Journey Starts Here</p>
         <h2>Your Career Journey Starts Here.</h2>
         <p>Take the next step towards becoming career-ready with ASCEND.</p>
         <a class="button button-primary" href="index.html?mode=signup">Get Started Today <span aria-hidden="true">↗</span></a>
@@ -126,17 +305,20 @@
   </main>
 
   <footer class="site-footer" id="contact">
-    <div class="container footer-grid">
+    <div class="home-container footer-grid">
       <div class="footer-brand-block">
         <a class="brand" href="home.html"><img src="assets/logo.png" alt=""><span>ASCEND</span></a>
-        <p>AI-powered career and resume intelligence for confident next steps.</p>
+        <p>Career and resume intelligence, skill assessment and preparation for confident next steps.</p>
       </div>
-      <div><h3>Features</h3><a href="#features">Resume Analyzer</a><a href="#features">Assessments</a><a href="#features">Mock Interview</a><a href="#features">Career Roadmap</a></div>
-      <div><h3>Navigation</h3><a href="#home">Home</a><a href="#about">About</a><a href="#features">Features</a><a href="#how-it-works">How It Works</a></div>
-      <div><h3>Contact</h3><p>hello@ascend.example</p><p>Career support and partnerships</p></div>
+      <div><h3>Features</h3><a href="#resume-analyzer">Resume Analyzer</a><a href="#assessment-tools">Assessments</a><a href="#assessment-tools">Mock Interview</a><a href="#career-planning">Career Roadmap</a><a href="#opportunities">Opportunities</a></div>
+      <div><h3>Navigation</h3><a href="#home">Home</a><a href="#about">About</a><a href="#features">Features</a><a href="#how-it-works">How It Works</a><a href="#who-its-for">Who It’s For</a></div>
+      <div><h3>Contact</h3><p>hello@ascend.example</p><p>+1 (000) 000-0000</p><p>Your city, country</p><a href="#contact">Privacy</a><a href="#contact">Terms</a></div>
     </div>
-    <div class="container footer-bottom"><span>© <span id="current-year"></span> ASCEND</span><div><a href="#contact">Privacy</a><a href="#contact">Terms</a></div></div>
+    <div class="home-container footer-bottom"><span>© <span id="current-year"></span> ASCEND</span><span>Career progress, one step at a time.</span></div>
   </footer>
+
+  <script src="js/userContext.js"></script>
+  <script src="js/home.js"></script>
   <script src="js/navbar.js"></script>
 </body>
 </html>

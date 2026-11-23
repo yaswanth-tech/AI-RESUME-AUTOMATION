@@ -355,9 +355,6 @@
             Upload your resume, review parsed fields, match with job descriptions, and export professional templates.
           </p>
         </div>
-        <div>
-          <button class="btn secondary-btn" onclick="location.href='dashboard.html'">← Back to Dashboard</button>
-        </div>
       </div>
 
       <!-- 1. UPLOAD PANEL -->
@@ -725,6 +722,11 @@
     const radius = 70;
     const circumference = 2 * Math.PI * radius;
 
+    function handleDownloadError(error) {
+      if (UserContext.isSessionExpired(error)) return;
+      alert("The file could not be downloaded. Please retry.");
+    }
+
     document.addEventListener("DOMContentLoaded", () => {
       const circle = document.getElementById("atsProgress");
       if (circle) {
@@ -870,6 +872,7 @@
       } catch (err) {
         statusEl.style.display = "none";
         uploadBtn.disabled = false;
+        if (UserContext.isSessionExpired(err)) return;
         alert("Error connecting to server. Please verify backend is running.");
       }
     };
@@ -947,7 +950,8 @@
         renderRewrites(resume.improvements, resume.parsedData);
         animateATS(document.getElementById('atsText'), document.getElementById('atsProgress'), Number(resume.atsScore || 0));
         status.style.display = 'none';
-      } catch {
+      } catch (error) {
+        if (UserContext.isSessionExpired(error)) return;
         status.textContent = 'Could not load this saved resume. Sign in with the account that owns it and retry.';
       }
     }
@@ -1004,6 +1008,7 @@
       } catch (e) {
         btn.disabled = false;
         btn.textContent = "💾 Save & Re-evaluate ATS";
+        if (UserContext.isSessionExpired(e)) return;
         alert("Network error updating candidate record.");
       }
     }
@@ -1113,6 +1118,7 @@
           }
         }
       } catch (e) {
+        if (UserContext.isSessionExpired(e)) return;
         alert("Failed to apply improvement.");
       }
     }
@@ -1140,6 +1146,7 @@
           }
         }
       } catch (e) {
+        if (UserContext.isSessionExpired(e)) return;
         alert("Failed to apply bullet action.");
       }
     }
@@ -1186,6 +1193,7 @@
         status.textContent = 'Job description analyzed.';
         status.style.color = '#15803d';
       } catch (error) {
+        if (UserContext.isSessionExpired(error)) return;
         status.textContent = error.message || 'Could not analyze this job description.';
         status.style.color = '#b91c1c';
       } finally {
@@ -1280,6 +1288,7 @@
       } catch (e) {
         btn.disabled = false;
         btn.textContent = "🎯 Match Against Resume";
+        if (UserContext.isSessionExpired(e)) return;
         alert("Error connecting to JD matching engine.");
       }
     }
@@ -1316,13 +1325,14 @@
           status.innerHTML = `
             <div style="background: #f0fdf4; border: 1px solid #bbf7d0; padding: 12px; border-radius: 8px; color: #15803d; font-size: 0.9rem;">
               ✔ Resume generated successfully!
-              <button type="button" class="btn primary-btn" style="margin-left: 14px; padding: 6px 14px;" onclick="UserContext.downloadWithAuth('/api/ats/download/${encodeURIComponent(data.filename)}', '${String(data.filename).replace(/['\\]/g, '')}')">Download File</button>
+              <button type="button" class="btn primary-btn" style="margin-left: 14px; padding: 6px 14px;" onclick="UserContext.downloadWithAuth('/api/ats/download/${encodeURIComponent(data.filename)}', '${String(data.filename).replace(/['\\]/g, '')}').catch(handleDownloadError)">Download File</button>
             </div>
           `;
         } else {
           status.innerHTML = `<span style="color:#ef4444;">Error: ${data.error || 'Generation failed'}</span>`;
         }
       } catch (e) {
+        if (UserContext.isSessionExpired(e)) return;
         status.innerHTML = '<span style="color:#ef4444;">Server error during resume generation.</span>';
       }
     }
@@ -1351,6 +1361,7 @@
           alert(data.error || "Failed to generate report.");
         }
       } catch (e) {
+        if (UserContext.isSessionExpired(e)) return;
         alert("Server error downloading report.");
       }
     }
