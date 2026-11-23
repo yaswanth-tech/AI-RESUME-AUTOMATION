@@ -648,7 +648,7 @@
     async function init() {
       try {
         CURRENT_USER = await UserContext.fetchUser();
-        UserContext.injectUserIdentity();
+        await UserContext.injectUserIdentity();
 
         const userId = UserContext.getUserId();
 
@@ -671,7 +671,7 @@
               }
             }
           } catch (e) {
-            console.warn("Could not fetch user profile details:", e);
+            if (!UserContext.isSessionExpired(e)) console.warn("Could not fetch user profile details:", e);
           }
         }
 
@@ -681,6 +681,7 @@
 
         await loadRoadmap(CURRENT_TEMPLATE_ID);
       } catch (err) {
+        if (UserContext.isSessionExpired(err)) return;
         console.error("Init Error:", err);
         await loadRoadmap('ai-ml-fast-track-2026');
       }

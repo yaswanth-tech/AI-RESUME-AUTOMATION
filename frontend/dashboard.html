@@ -490,7 +490,7 @@
           renderDashboard(json.data);
         }
       } catch (e) {
-        console.error("Dashboard Load Failed", e);
+        if (!UserContext.isSessionExpired(e)) console.error("Dashboard Load Failed", e);
       }
     }
 
@@ -564,9 +564,13 @@
       `).join('');
     }
 
+    function handleDashboardDownloadError(error) {
+      if (!UserContext.isSessionExpired(error)) alert('Could not download this resume. Please retry.');
+    }
+
     async function downloadOriginalResume(resumeId) {
       try { await UserContext.downloadWithAuth(`/api/ats/resumes/${resumeId}/file`); }
-      catch { alert('Could not download this resume. Sign in again and retry.'); }
+      catch (error) { handleDashboardDownloadError(error); }
     }
 
     async function deleteResume(resumeId) {
@@ -576,8 +580,8 @@
         const data = await response.json();
         if (!response.ok || !data.success) throw new Error();
         await loadDashboard();
-      } catch {
-        alert('Could not delete this resume. Please retry.');
+      } catch (error) {
+        if (!UserContext.isSessionExpired(error)) alert('Could not delete this resume. Please retry.');
       }
     }
 
@@ -613,8 +617,8 @@
             <div style="font-size: 0.8rem; color: var(--text-muted);">${new Date(g.date).toLocaleDateString()}</div>
           </div>
           <div style="display: flex; gap: 8px;">
-            ${g.pdfUrl ? `<a href="#" onclick="event.preventDefault(); UserContext.downloadWithAuth('${g.pdfUrl}', 'resume.pdf').catch(() => alert('Download failed. Sign in again and retry.'))" class="nav-item" style="width: auto; padding: 4px 10px; font-size: 0.8rem; text-decoration: none; border: 1px solid rgba(255,255,255,0.15); display: inline-block;">PDF</a>` : ''}
-            ${g.docxUrl ? `<a href="#" onclick="event.preventDefault(); UserContext.downloadWithAuth('${g.docxUrl}', 'resume.docx').catch(() => alert('Download failed. Sign in again and retry.'))" class="nav-item" style="width: auto; padding: 4px 10px; font-size: 0.8rem; text-decoration: none; border: 1px solid rgba(255,255,255,0.15); display: inline-block;">DOCX</a>` : ''}
+            ${g.pdfUrl ? `<a href="#" onclick="event.preventDefault(); UserContext.downloadWithAuth('${g.pdfUrl}', 'resume.pdf').catch(handleDashboardDownloadError)" class="nav-item" style="width: auto; padding: 4px 10px; font-size: 0.8rem; text-decoration: none; border: 1px solid rgba(255,255,255,0.15); display: inline-block;">PDF</a>` : ''}
+            ${g.docxUrl ? `<a href="#" onclick="event.preventDefault(); UserContext.downloadWithAuth('${g.docxUrl}', 'resume.docx').catch(handleDashboardDownloadError)" class="nav-item" style="width: auto; padding: 4px 10px; font-size: 0.8rem; text-decoration: none; border: 1px solid rgba(255,255,255,0.15); display: inline-block;">DOCX</a>` : ''}
           </div>
         </div>
       `).join('');

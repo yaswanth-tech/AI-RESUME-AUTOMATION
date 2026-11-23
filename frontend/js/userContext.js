@@ -1,6 +1,17 @@
 const API_BASE = '/api';
 
+class SessionExpiredError extends Error {
+  constructor() {
+    super('Your session has expired. Please log in again.');
+    this.name = 'SessionExpiredError';
+  }
+}
+
+let sessionRedirectStarted = false;
+
 const UserContext = {
+  sessionCheckPromise: null,
+
   getToken() {
     return localStorage.getItem('ascend_token') || '';
   },
@@ -11,10 +22,25 @@ const UserContext = {
   },
 
   logout() {
+    this.clearSession();
+    window.location.href = 'home.html';
+  },
+
+  clearSession() {
     localStorage.removeItem('ascend_user');
     localStorage.removeItem('ascend_token');
     localStorage.removeItem('ATS_DATA');
-    window.location.href = 'home.html';
+  },
+
+  isSessionExpired(error) {
+    return error?.name === 'SessionExpiredError';
+  },
+
+  redirectAfterUnauthorized(hadToken) {
+    this.clearSession();
+    if (sessionRedirectStarted) return;
+    sessionRedirectStarted = true;
+    window.location.replace(hadToken ? 'index.html?session=expired' : 'index.html');
   },
 
   getUser() {
@@ -33,30 +59,46 @@ const UserContext = {
 
   async fetchUser() {
     const token = this.getToken();
-    if (token) {
-      try {
-        const res = await fetch(`${API_BASE}/auth/me`, {
-          headers: { 'Authorization': `Bearer ${token}` }
-        });
-        const data = await res.json();
-        if (data.success && data.user) {
-          localStorage.setItem('ascend_user', JSON.stringify(data.user));
-          return data.user;
-        }
-      } catch (e) {
-        console.warn("Auth token check failed, using cached user:", e.message);
-      }
+    if (!token) {
+      this.clearSession();
+      return null;
     }
-    return token ? this.getUser() : null;
+    if (this.sessionCheckPromise) return this.sessionCheckPromise;
+
+    this.sessionCheckPromise = (async () => {
+      try {
+        const response = await this.fetchWithAuth(`${API_BASE}/auth/me`);
+        if (!response.ok) {
+          throw new Error(`Session validation failed with status ${response.status}.`);
+        }
+        const data = await response.json();
+        if (!data.success || !data.user) {
+          throw new Error('Session validation returned no authenticated user.');
+        }
+        localStorage.setItem('ascend_user', JSON.stringify(data.user));
+        return data.user;
+      } catch (error) {
+        if (!this.isSessionExpired(error)) console.error('Unable to validate the current session:', error);
+        throw error;
+      } finally {
+        this.sessionCheckPromise = null;
+      }
+    })();
+
+    return this.sessionCheckPromise;
   },
 
   async fetchWithAuth(url, options = {}) {
-    const headers = { ...(options.headers || {}) };
+    const headers = new Headers(options.headers || {});
     const token = this.getToken();
-    if (token) {
-      headers['Authorization'] = `Bearer ${token}`;
+    if (token) headers.set('Authorization', `Bearer ${token}`);
+
+    const response = await fetch(url, { ...options, headers });
+    if (response.status === 401) {
+      this.redirectAfterUnauthorized(Boolean(token));
+      throw new SessionExpiredError();
     }
-    return fetch(url, { ...options, headers });
+    return response;
   },
 
   async downloadWithAuth(url, filename) {
@@ -76,6 +118,7 @@ const UserContext = {
 
   async injectUserIdentity() {
     const user = await this.fetchUser();
+    if (!user) return null;
     document.querySelectorAll('.user-name-display, .user-name').forEach(el => {
       el.textContent = user.name || 'Student';
     });
@@ -85,5 +128,7 @@ const UserContext = {
 
 // Auto-run on DOM load
 document.addEventListener('DOMContentLoaded', () => {
-  UserContext.injectUserIdentity();
+  UserContext.injectUserIdentity().catch(error => {
+    if (!UserContext.isSessionExpired(error)) console.error('Unable to load current user identity:', error);
+  });
 });

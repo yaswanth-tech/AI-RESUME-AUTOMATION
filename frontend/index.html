@@ -172,6 +172,17 @@
       text-decoration: none
     }
 
+    .glass-card .session-notice {
+      margin: 0 0 16px;
+      padding: 10px 12px;
+      border: 1px solid #bfdbfe;
+      border-radius: 10px;
+      color: #1e40af;
+      background: #eff6ff;
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
     .actions {
       display: flex;
       gap: 10px;
@@ -262,6 +273,7 @@
         <button id="tabSignup" class="tab-btn" role="tab" aria-selected="false" onclick="showPanel('signup')">Sign
           Up</button>
       </div>
+      <p class="session-notice" id="sessionExpiredNotice" role="status" aria-live="polite" hidden>Your session expired. Please log in again.</p>
 
       <!-- LOGIN PANEL -->
       <div id="panel-login" class="panel" aria-hidden="false">
@@ -440,8 +452,12 @@
     }
 
     // Let landing-page links open the intended authentication panel directly.
-    const authMode = new URLSearchParams(window.location.search).get('mode');
-    if (authMode === 'signup' || authMode === 'login') {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('session') === 'expired') {
+      showPanel('login');
+      document.getElementById('sessionExpiredNotice').hidden = false;
+    } else if (params.get('mode') === 'signup' || params.get('mode') === 'login') {
+      const authMode = params.get('mode');
       showPanel(authMode);
     }
   </script>

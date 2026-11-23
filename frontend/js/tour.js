@@ -17,7 +17,7 @@ class ProductTour {
         this.start();
       }
     } catch (e) {
-      console.error("Tour User Check Failed", e);
+      if (!UserContext.isSessionExpired(e)) console.error("Tour User Check Failed", e);
     }
   }
 
@@ -134,7 +134,7 @@ class ProductTour {
     try {
       await UserContext.fetchWithAuth('/api/user/complete-tour', { method: 'POST' });
     } catch (e) {
-      console.error("Failed to save tour completion", e);
+      if (!UserContext.isSessionExpired(e)) console.error("Failed to save tour completion", e);
     }
   }
 
