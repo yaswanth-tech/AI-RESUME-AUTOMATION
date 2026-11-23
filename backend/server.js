@@ -119,6 +119,10 @@ uploadDirs.forEach(dir => {
   }
 });
 
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, '../frontend/home.html'));
+});
+
 /* ================= STATIC FILES ================= */
 app.use(express.static(path.join(__dirname, "../frontend")));
 

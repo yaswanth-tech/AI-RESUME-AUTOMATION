@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Profile | ASCEND</title>
+  <link rel="stylesheet" href="css/navbar.css">
+  <style>
+    body.profile-page { background: #f8faff; color: #0f172a; font-family: "DM Sans", sans-serif; }
+    .profile-main { min-height: calc(100vh - 76px); display: grid; place-items: start center; padding: 64px 20px; }
+    .profile-card { width: min(640px, 100%); padding: 32px; border: 1px solid #e2e8f0; border-radius: 18px; background: #fff; box-shadow: 0 18px 44px rgba(15,23,42,.08); }
+    .profile-card h1 { margin: 0 0 24px; font-size: 28px; }
+    .profile-details { display: grid; gap: 18px; }
+    .profile-field { padding-bottom: 14px; border-bottom: 1px solid #e2e8f0; }
+    .profile-field span { display: block; margin-bottom: 6px; color: #64748b; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; }
+    .profile-field strong { font-size: 16px; }
+  </style>
+  <link rel="stylesheet" href="css/app-theme.css">
+</head>
+<body class="profile-page">
+  <div id="app-navbar"></div>
+  <main class="profile-main">
+    <section class="profile-card" aria-labelledby="profile-title">
+      <h1 id="profile-title">My Profile</h1>
+      <div class="profile-details">
+        <div class="profile-field">
+          <span>Name</span>
+          <strong id="profile-name">ASCEND User</strong>
+        </div>
+        <div class="profile-field">
+          <span>Email</span>
+          <strong id="profile-email">Not available</strong>
+        </div>
+      </div>
+    </section>
+  </main>
+  <script src="js/userContext.js"></script>
+  <script src="js/navbar.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      const user = await UserContext.fetchUser();
+      if (user) {
+        document.getElementById('profile-name').textContent = user.name || 'ASCEND User';
+        document.getElementById('profile-email').textContent = user.email || 'Not available';
+      }
+    });
+  </script>
+</body>
+</html>

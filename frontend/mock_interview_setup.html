@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AI Mock Interview Setup — ASCEND</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/navbar.css">
   <style>
     :root {
       --primary: #6366f1;
@@ -15,8 +16,8 @@
       --text-main: #1e293b;
       --text-muted: #64748b;
       --border: #e2e8f0;
-      --sidebar-bg: #0f1724;
-      --menu-text: #cbd5e1;
+
+
     }
 
     * {
@@ -29,92 +30,16 @@
       font-family: 'Inter', system-ui, -apple-system, sans-serif;
       background-color: var(--bg);
       color: var(--text-main);
-      display: flex;
+      display: block;
       min-height: 100vh;
-    }
-
-    /* SIDEBAR (Consistent with existing app) */
-    .sidebar {
-      width: 300px;
-      background: var(--sidebar-bg);
-      color: white;
-      padding: 26px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      flex-shrink: 0;
-    }
-
-    .brand-logo {
-      width: 140px;
-      height: 140px;
-      border-radius: 50%;
-      background: #0b1220;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 10px;
-    }
-
-    .brand-logo img {
-      width: 80px;
-    }
-
-    .sidebar-title {
-      color: #a5b4fc;
-      font-weight: 700;
-      margin-bottom: 20px;
-    }
-
-    .user-row {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 24px;
-    }
-
-    .user-icon {
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      background: #1f2937;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .menu {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .menu button {
-      padding: 12px;
-      border: none;
-      background: transparent;
-      color: var(--menu-text);
-      font-weight: 600;
-      text-align: left;
-      cursor: pointer;
-      border-radius: 8px;
-      width: 100%;
-      font-family: inherit;
-    }
-
-    .menu button.active {
-      background: linear-gradient(90deg, var(--primary), var(--primary-hover));
-      color: white;
     }
 
     /* MAIN CONTENT */
     .main {
-      flex: 1;
       padding: 60px 40px;
       display: flex;
       justify-content: center;
-      align-items: flex-start;
+      align-items: flex-start; width: 100%;
     }
 
     .container {
@@ -206,66 +131,18 @@
       transform: scale(0.99);
     }
 
-    /* RESPONSIVE */
-    @media (max-width: 1024px) {
-      .sidebar {
-        width: 260px;
-      }
-    }
-
     @media (max-width: 768px) {
-      body {
-        flex-direction: column;
-      }
-
-      .sidebar {
-        width: 100%;
-        padding: 20px;
-      }
-
       .main {
-        padding: 40px 20px;
+        padding: 40px 20px; width: 100%;
       }
     }
   </style>
+  <link rel="stylesheet" href="css/app-theme.css">
 </head>
 
 <body>
-  <!-- SIDEBAR -->
-  <aside class="sidebar">
-    <div class="brand-row" onclick="location.href='dashboard.html'" style="cursor: pointer; display: flex; align-items: center; gap: 12px; margin-bottom: 24px;">
-      <div style="width: 38px; height: 38px; border-radius: 10px; background: linear-gradient(135deg, var(--primary, #4f46e5), #6366f1); display: flex; align-items: center; justify-content: center; color: white; font-weight: 800; font-size: 18px;">A</div>
-      <div style="font-size: 1.25rem; font-weight: 800; color: #0f172a; letter-spacing: -0.5px;">ASCEND</div>
-    </div>
-
-    <div class="user-row" style="display: flex; align-items: center; gap: 10px; padding: 10px 12px; background: #eef2ff; border-radius: 10px; margin-bottom: 20px;">
-      <div class="user-icon" style="width: 32px; height: 32px; border-radius: 50%; background: white; display: flex; align-items: center; justify-content: center; font-size: 14px;">👤</div>
-      <div>
-        <div class="user-name-display" style="font-weight: 700; font-size: 0.9rem; color: #0f172a;">Student</div>
-        <div style="font-size: 0.75rem; color: #64748b;">Batch 2026</div>
-      </div>
-    </div>
-
-    <nav class="menu" style="display: flex; flex-direction: column; gap: 6px;">
-      <button onclick="location.href='dashboard.html'">📊 Dashboard</button>
-      <button onclick="location.href='resume_upload.html'">📄 Resume Analyzer</button>
-      <button onclick="location.href='technical_test_setup.html'">⚡ Technical Test</button>
-      <button onclick="location.href='communication_test.html'">💬 Communication Test</button>
-      <button class="active" onclick="location.href='mock_interview_setup.html'">🎯 Mock Interview</button>
-      <button onclick="location.href='roadmap.html'">🗺️ Roadmap</button>
-      <button onclick="location.href='opportunities.html'">💼 Opportunities</button>
-    </nav>
-
-    <div style="margin-top: auto; width: 100%; padding-top: 16px; border-top: 1px solid #e2e8f0;">
-      <button onclick="UserContext.logout()"
-        style="background: none; color: #ef4444; width:100%; text-align:left; padding:8px 12px; border:none; font-weight:600; font-size:13px; cursor:pointer; font-family:inherit; display: flex; align-items: center; gap: 8px;">
-        🚪 Log Out
-      </button>
-      <div style="padding-left:12px; font-size: 0.75rem; color: #94a3b8; margin-top: 4px;">Signed in to ASCEND</div>
-    </div>
-  </aside>
-
-  <main class="main">
+<div id="app-navbar"></div>
+<main class="main">
     <div class="container">
       <header>
         <h1>AI Mock Interview Setup</h1>
@@ -377,6 +254,7 @@
       window.location.href = 'mock_interview_session.html';
     }
   </script>
+  <script src="js/navbar.js"></script>
 </body>
 
 </html>

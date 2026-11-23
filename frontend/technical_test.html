@@ -3,8 +3,39 @@
 <head>
 <meta charset="UTF-8">
 <title>Technical Test</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="css/navbar.css">
 
 <style>
+body {
+  font-family: 'DM Sans', sans-serif;
+  margin: 0;
+  background: #080d1b;
+  color: #f6f7fb;
+  min-height: 100vh;
+}
+
+.main {
+  width: 100%;
+  min-height: calc(100vh - 76px);
+  padding: 20px 40px 40px;
+}
+
+.test-header {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+select {
+  background: #111827;
+  color: #f6f7fb;
+  border: 1px solid rgba(195,207,238,.16);
+  border-radius: 8px;
+  padding: 9px 12px;
+}
+
 /* ===== BUTTON ===== */
 .primary-btn{
   background:#6366f1;
@@ -166,9 +197,12 @@
   font-size:18px;
 }
 </style>
+<link rel="stylesheet" href="css/app-theme.css">
 </head>
 
 <body>
+<div id="app-navbar"></div>
+<main class="main">
 
 <h2>Technical Test</h2>
 
@@ -210,6 +244,9 @@
 
 </div>
 
+</main>
+<script src="js/userContext.js"></script>
 <script src="technical_test.js"></script>
+<script src="js/navbar.js"></script>
 </body>
 </html>

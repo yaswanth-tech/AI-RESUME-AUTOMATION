@@ -12,6 +12,7 @@
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/navbar.css">
   <script src="js/userContext.js"></script>
   <style>
     body {
@@ -19,7 +20,6 @@
       background-color: #0f172a;
       color: #f8fafc;
       overflow: hidden;
-      /* Prevent body scroll */
     }
 
     .bottom-bar {
@@ -88,9 +88,11 @@
       background: #6366f1;
     }
   </style>
+  <link rel="stylesheet" href="css/app-theme.css">
 </head>
 
 <body>
+  <div id="app-navbar"></div>
   <div id="root"></div>
 
   <script type="text/babel">
@@ -502,7 +504,7 @@
 
       if (mode === 'ready') {
         return (
-          <div className="h-screen w-screen flex flex-col items-center justify-center p-6 bg-slate-950">
+          <div className="h-[calc(100vh-76px)] w-screen flex flex-col items-center justify-center p-6 bg-slate-950">
             <div className="avatar-container mb-8 text-white">
               <img src="assets/ai_avatar.png" className="w-full h-full object-cover opacity-80" alt="AI Interviewer" />
             </div>
@@ -547,20 +549,7 @@
         }
 
         return (
-          <div className="h-screen w-screen flex flex-col bg-slate-950 overflow-y-scroll custom-scrollbar">
-            <header className="h-[60px] border-b border-slate-800 px-8 flex items-center justify-between bg-slate-950 shrink-0">
-              <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-md bg-indigo-500 flex items-center justify-center font-bold text-white">A</div>
-                <span className="font-bold tracking-tight text-white uppercase text-sm">Ascend <span className="text-indigo-500">REPORT</span></span>
-              </div>
-              <button
-                onClick={() => window.location.href = 'dashboard.html'}
-                className="text-slate-400 hover:text-white text-sm font-medium transition-colors"
-              >
-                Dashboard
-              </button>
-            </header>
-
+          <div className="h-[calc(100vh-76px)] w-screen flex flex-col bg-slate-950 overflow-y-scroll custom-scrollbar">
             <main className="p-10 max-w-5xl mx-auto w-full">
               <div className="flex items-center justify-between mb-8">
                 <div>
@@ -631,22 +620,7 @@
       }
 
       return (
-        <div className="h-screen w-screen flex flex-col bg-slate-950 relative">
-          {/* Header */}
-          <header className="h-[60px] border-b border-slate-800 px-8 flex items-center justify-between z-40 bg-slate-950">
-            {/* Same Header Content */}
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-md bg-indigo-500 flex items-center justify-center font-bold text-white">A</div>
-              <span className="font-bold tracking-tight text-white uppercase text-sm">Ascend <span className="text-indigo-500">MOCK</span></span>
-            </div>
-            <button
-              onClick={() => window.location.href = 'mock_interview_setup.html'}
-              className="text-slate-400 hover:text-white text-sm font-medium transition-colors"
-            >
-              Exit
-            </button>
-          </header>
-
+        <div className="h-[calc(100vh-76px)] w-screen flex flex-col bg-slate-950 relative">
           <main className="flex-1 flex overflow-hidden relative">
             <div className="flex-1 flex flex-col items-center justify-center main-content px-10">
 
@@ -768,6 +742,7 @@
     const root = ReactDOM.createRoot(document.getElementById('root'));
     root.render(<App />);
   </script>
+  <script src="js/navbar.js"></script>
 </body>
 
 </html>
